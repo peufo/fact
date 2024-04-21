@@ -8,6 +8,9 @@ dependencies:
   '@lucia-auth/adapter-prisma':
     specifier: ^4.0.1
     version: 4.0.1(@prisma/client@5.12.1)(lucia@3.1.1)
+  '@mdi/js':
+    specifier: ^7.4.47
+    version: 7.4.47
   '@prisma/client':
     specifier: 5.12.1
     version: 5.12.1(prisma@5.12.1)
@@ -23,6 +26,9 @@ dependencies:
   prisma:
     specifier: ^5.12.1
     version: 5.12.1
+  svelte-sonner:
+    specifier: ^0.3.22
+    version: 0.3.22(svelte@4.2.15)
 
 devDependencies:
   '@sveltejs/adapter-auto':
@@ -47,7 +53,7 @@ devDependencies:
     specifier: ^10.4.16
     version: 10.4.19(postcss@8.4.38)
   daisyui:
-    specifier: ^4.4.20
+    specifier: ^4.10.2
     version: 4.10.2(postcss@8.4.38)
   eslint:
     specifier: ^8.56.0

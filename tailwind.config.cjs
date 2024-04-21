@@ -1,14 +1,17 @@
-const daisyui = require("daisyui");
+const daisyui = require('daisyui')
 
 /** @type {import('tailwindcss').Config}*/
 const config = {
-  content: ["./src/**/*.{html,js,svelte,ts}"],
+	content: ['./src/**/*.{html,js,svelte,ts}', './node_modules/**/fuma/dist/**/*.svelte'],
 
-  theme: {
-    extend: {}
-  },
+	theme: {
+		extend: {}
+	},
 
-  plugins: [daisyui]
-};
+	plugins: [daisyui],
+	daisyui: {
+		logs: false
+	}
+}
 
-module.exports = config;
+module.exports = config

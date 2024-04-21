@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Login from '$lib/ui/Login.svelte'
+	import { Login } from 'fuma'
 </script>
 
 <div class="grid h-screen place-content-center">
