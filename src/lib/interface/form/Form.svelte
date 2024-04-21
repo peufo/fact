@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, createEventDispatcher, type ComponentProps } from 'svelte'
 	import type { z } from 'zod'
-	import { debounce } from '$lib/debounce'
+	import debounce from 'debounce'
 	import { fade } from 'svelte/transition'
 	import type { FormEventHandler } from 'svelte/elements'
 	import type { SubmitFunction } from '@sveltejs/kit'
@@ -9,11 +9,8 @@
 	import { page } from '$app/stores'
 	import { enhance } from '$app/forms'
 
-	import { workspacePath } from '$lib/store'
-	import { useNotify } from '$lib/notify'
-	import Button from '$lib/material/Button.svelte'
-	import Input from '$lib/material/Input.svelte'
-	import Section from '$lib/material/Section.svelte'
+	import Input from './Input.svelte'
+	import FormSection from './FormSection.svelte'
 
 	type Shema = $$Generic<z.ZodRawShape>
 	type Data = Partial<z.infer<z.ZodObject<Shema>>>
@@ -56,8 +53,6 @@
 	export let includeGenericFields = false
 	export let dark = false
 
-	/** default: workspacePath */
-	export let basePath = $workspacePath
 	export let action = ''
 	export let actionDelete = ''
 
@@ -94,7 +89,7 @@
 			number: valueAsNumber,
 			date: valueAsDate,
 			text: value,
-			checkbox: checked,
+			checkbox: checked
 		}
 		const v = typeMapValue[type] ?? value
 		if (v === undefined || name === undefined) return
@@ -117,7 +112,7 @@
 		errors = issues.reduce(
 			(acc, cur) => ({
 				...acc,
-				[cur.path[0]]: cur.message,
+				[cur.path[0]]: cur.message
 			}),
 			{}
 		)
@@ -172,7 +167,7 @@
 		{@const section = sections[groupIndex] || {}}
 		{#if !getBoolean(section?.hide)(data)}
 			<div class="contents" in:fade|local={{ duration: 200 }}>
-				<Section
+				<FormSection
 					{dark}
 					persistent
 					title={section.title}
@@ -202,7 +197,7 @@
 							{/if}
 						{/each}
 					</div>
-				</Section>
+				</FormSection>
 			</div>
 		{/if}
 	{/each}
@@ -210,7 +205,7 @@
 	{#if includeGenericFields}
 		{@const keys = fields.flat().map((f) => f.key)}
 		{@const genericFields = Object.entries(shema.shape).filter(([key]) => !keys.includes(key))}
-		<section class="border border-primary-lighter rounded-md">
+		<section class="border-primary-lighter rounded-md border">
 			<div class="grid grid-cols-2 gap-x-4 gap-y-2 p-4">
 				<!-- Full generic method -->
 				{#each genericFields as [key, fieldShap]}

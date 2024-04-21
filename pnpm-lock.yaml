@@ -14,6 +14,9 @@ dependencies:
   '@prisma/client':
     specifier: 5.12.1
     version: 5.12.1(prisma@5.12.1)
+  debounce:
+    specifier: ^2.0.0
+    version: 2.0.0
   fuma:
     specifier: ^0.1.5
     version: 0.1.5(@sveltejs/kit@2.5.7)(svelte@4.2.15)
@@ -29,6 +32,9 @@ dependencies:
   svelte-sonner:
     specifier: ^0.3.22
     version: 0.3.22(svelte@4.2.15)
+  zod:
+    specifier: ^3.22.5
+    version: 3.22.5
 
 devDependencies:
   '@sveltejs/adapter-auto':
