@@ -2,7 +2,7 @@
 	import { mdiAccountOutline, mdiLogout } from '@mdi/js'
 	import { DropDown, Icon } from 'fuma'
 
-	export let user: App.Locals['user']
+	export let user: App.Locals['user'] = null
 </script>
 
 {#if user}
