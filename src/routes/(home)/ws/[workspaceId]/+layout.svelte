@@ -2,17 +2,14 @@
 	import { mdiHomeCityOutline } from '@mdi/js'
 	import { invalidate } from '$app/navigation'
 
-	import { urlParam } from '$lib/store'
-	import Header from '$lib/layout/Header.svelte'
-	import Navbar from '$lib/layout/Navbar.svelte'
-	import Icon from '$lib/material/Icon.svelte'
-	import Search from '$lib/Search.svelte'
-	import CreateMenu from '$lib/CreateMenu.svelte'
+	import { urlParam, Icon, InputSearch  } from 'fuma'
+	import { Header, MenuCreate /* Navbar*/ } from '$lib/layout'
+	import type  { Form } from '$lib/interface'
+
 	import Drawer from '$lib/material/Drawer.svelte'
-	import type Form from '$lib/material/Form.svelte'
+	
 	import CaseForm from './case/Form.svelte'
 	import ContactForm from './contact/Form.svelte'
-	import ContactImplicationForm from './contact/ImplicationForm.svelte'
 	import RoleForm from './contact/RoleForm.svelte'
 	import NoteForm from './note/Form.svelte'
 	import ContactImplicationDrawer from './contact/ImplicationDrawer.svelte'
@@ -57,9 +54,9 @@
 
 	<div class="grow" />
 
-	<Search />
+	<InputSearch />
 
-	<CreateMenu />
+	<MenuCreate />
 </Header>
 
 <div class="flex grow overflow-auto">

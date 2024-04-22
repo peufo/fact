@@ -1,25 +1,25 @@
 <script lang="ts">
-	import Section from '$lib/material/Section.svelte'
+	import { CardBasic } from 'fuma'
 </script>
 
-<div class="w-max-3xl mx-auto p-4 flex flex-col gap-4">
-	<Section title="TODO: Dashboard">
+<div class="w-max-3xl mx-auto flex flex-col gap-4 p-4">
+	<CardBasic title="TODO: Dashboard">
 		<ul class="list-disc px-4">
 			<li>Affaires courantes</li>
 			<li>Dernières notes</li>
 			<li>Echéances à venir</li>
 		</ul>
-	</Section>
+	</CardBasic>
 
-	<Section title="TODO">
+	<CardBasic title="TODO">
 		<ul class="list-disc px-4">
 			<li>Préstations</li>
 			<li>Types de notes</li>
 			<li>Connexion à la GED</li>
 		</ul>
-	</Section>
+	</CardBasic>
 
-	<Section title="Définitions">
+	<CardBasic title="Définitions">
 		<h3 class="text-lg">note</h3>
 		<ul class="list-disc px-4">
 			<li>
@@ -42,5 +42,5 @@
 			<li>Event: <a href="https://fr.wikipedia.org/wiki/CalDAV">CalDav</a></li>
 			<li>Contact: <a href="https://fr.wikipedia.org/wiki/CardDAV">CardDav</a></li>
 		</ul>
-	</Section>
+	</CardBasic>
 </div>

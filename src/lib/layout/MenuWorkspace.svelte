@@ -22,7 +22,7 @@
 
 		<div class="flex flex-col gap-1">
 			{#each workspaces as workspace}
-				<a href="/workspace/{workspace.slug}" class="menu-item">
+				<a href="/ws/{workspace.slug}" class="menu-item">
 					{workspace.name}
 				</a>
 			{/each}

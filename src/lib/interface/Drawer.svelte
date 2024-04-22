@@ -4,8 +4,7 @@
 	import { page } from '$app/stores'
 	import { goto } from '$app/navigation'
 
-	import { urlParam } from '$lib/store'
-	import IconButton from '$lib/material/IconButton.svelte'
+	import { Icon, urlParam } from 'fuma'
 
 	export let title = ''
 	/** Key used in url query params */
@@ -28,23 +27,26 @@
 </script>
 
 {#if active}
+	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div
 		on:click={close}
 		on:keyup={close}
-		class="fixed inset-0 bg-primary-dark/40 backdrop-blur-[2px] z-10"
+		class="bg-primary-dark/40 fixed inset-0 z-10 backdrop-blur-[2px]"
 	/>
 
 	<aside
 		transition:fly|local={{ x: 500, duration: 200 }}
 		class="{klass}
-      fixed top-0 right-0 bottom-0 z-10 w-fit min-w-[300px]
-      flex flex-col 
-      bg-primary/90 text-primary-lighter fill-primary-lighter stroke-primary-lighter
+      text-primary-lighter fill-primary-lighter stroke-primary-lighter fixed bottom-0 right-0 top-0
+      z-10 flex
+      w-fit min-w-[300px] flex-col bg-primary/90
     "
 	>
-		<div class="flex items-center justify-between gap-32 p-4 border-b border-primary-dark">
-			<h2 class="uppercase text-xl font-medium opacity-70 tracking-wider">{title}</h2>
-			<IconButton dark path={mdiClose} on:click={close} title="annuler" />
+		<div class="border-primary-dark flex items-center justify-between gap-32 border-b p-4">
+			<h2 class="text-xl font-medium uppercase tracking-wider opacity-70">{title}</h2>
+			<button on:click={close} class="btn btn-square btn-sm">
+				<Icon path={mdiClose} title="annuler" />
+			</button>
 		</div>
 
 		<div class="grow overflow-auto">

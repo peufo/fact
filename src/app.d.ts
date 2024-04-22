@@ -1,4 +1,4 @@
-import type { Workspace } from '@prisma/client'
+import type { Workspace, WorkspaceMember, User } from '@prisma/client'
 
 declare global {
 	namespace App {
@@ -7,7 +7,7 @@ declare global {
 			session: import('lucia').Session | null
 		}
 		interface PageData {
-			workspace: Workspace | null
+			workspace: (Workspace & { members: (WorkspaceMember & { user: User })[] }) | null
 		}
 		// interface Error {}
 		// interface PageState {}

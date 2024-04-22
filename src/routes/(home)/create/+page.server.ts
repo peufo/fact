@@ -29,7 +29,7 @@ export const actions = {
 				})
 				return workspace
 			},
-			(w) => `/workspace/${w.id}`
+			(w) => `/ws/${w.id}`
 		)
 	}
 }
