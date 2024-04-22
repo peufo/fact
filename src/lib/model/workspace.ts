@@ -1,14 +1,10 @@
-import z from 'zod'
 import type { Prisma } from '@prisma/client'
-import type { ZodObj } from './utils'
+import { z, type ZodObj } from 'fuma'
 
-type WorkspaceCreateForm = Omit<Prisma.WorkspaceUncheckedCreateInput, 'id'>
-const workspaceForm = {
+export const modelWorkspace = {
 	name: z.string().min(2),
 	slug: z.string(),
-	logo: z.string().optional().nullable(),
-	gedType: z.string().optional().nullable(),
-	gedToken: z.string().optional().nullable(),
-} satisfies ZodObj<WorkspaceCreateForm>
-
-export const workspaceShema = z.object(workspaceForm)
+	logo: z.string().optional(),
+	gedType: z.string().optional(),
+	gedToken: z.string().optional()
+} satisfies ZodObj<Prisma.WorkspaceCreateInput>

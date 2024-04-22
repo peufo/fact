@@ -1,47 +1,37 @@
-import z from 'zod'
 import type { Prisma } from '@prisma/client'
-import type { ZodObj } from './utils'
+import { z, type ZodObj } from 'fuma'
 
-type ContactForm = Omit<Prisma.ContactCreateInput, 'id' | 'workspace' | 'cases' | 'tags'>
-const contactCreateForm = {
+export const modelContact = {
 	name: z.string().min(2),
 	isMoralPerson: z.boolean(),
-	firstName: z.string().optional().nullable(),
-	attentionTo: z.string().optional().nullable(),
-	language: z.string().optional().nullable().default('fr-ch'),
-	country: z.string().optional().nullable(),
-	zipCode: z.string().regex(/\d{4}/).length(4).optional().nullable(),
-	city: z.string().optional().nullable(),
-	street: z.string().optional().nullable(),
-	email: z.string().optional().nullable(),
-	phone: z.string().optional().nullable(),
-	web: z.string().optional().nullable(),
-	greeting: z.string().optional().nullable(),
-	note: z.string().optional().nullable(),
-	birthday: z.union([z.date(), z.string()]).optional().nullable(),
-	job: z.string().optional().nullable(),
-	civilStatus: z.string().optional().nullable(),
-	partner: z.string().optional().nullable(),
-	iban: z.string().optional().nullable(),
-	tva: z.string().optional().nullable(),
-} satisfies ZodObj<ContactForm>
-export const contactShema = z.object(contactCreateForm)
+	firstName: z.string().optional(),
+	attentionTo: z.string().optional(),
+	language: z.string().optional().default('fr-ch'),
+	country: z.string().optional(),
+	zipCode: z.string().regex(/\d{4}/).length(4).optional(),
+	city: z.string().optional(),
+	street: z.string().optional(),
+	email: z.string().optional(),
+	phone: z.string().optional(),
+	web: z.string().optional(),
+	greeting: z.string().optional(),
+	note: z.string().optional(),
+	birthday: z.dateOptional(),
+	job: z.string().optional(),
+	civilStatus: z.string().optional(),
+	partner: z.string().optional(),
+	iban: z.string().optional(),
+	tva: z.string().optional()
+} satisfies ZodObj<Omit<Prisma.ContactCreateInput, 'workspace'>>
 
-type ContactImplicationForm = Omit<
-	Prisma.ContactImplicationUncheckedCreateInput,
-	'id' | 'workspaceId'
-> & { roles?: string[] }
-const contactImplicationForm = {
-	contactId: z.string(),
-	caseId: z.string(),
-	description: z.string().optional().nullable(),
-	roles: z.array(z.string()).optional(),
-} satisfies ZodObj<ContactImplicationForm>
-export const contactImplicationShema = z.object(contactImplicationForm)
+export const modeContactImplication = {
+	contact: z.relation.connect,
+	case: z.relation.connect,
+	description: z.string().optional(),
+	roles: z.relations.connect
+} satisfies ZodObj<Omit<Prisma.ContactImplicationCreateInput, 'workspace'>>
 
-type ContactRoleForm = Omit<Prisma.ContactRoleUncheckedCreateInput, 'id' | 'workspaceId'>
-const contactRoleForm = {
+export const modelContactRole = {
 	name: z.string(),
-	description: z.string().optional().nullable(),
-} satisfies ZodObj<ContactRoleForm>
-export const contactRoleShema = z.object(contactRoleForm)
+	description: z.string().optional()
+} satisfies ZodObj<Omit<Prisma.ContactRoleCreateInput, 'workspace'>>

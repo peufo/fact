@@ -8,11 +8,13 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(cuid())
-  sessions Session[]
-  username String    @unique
-  email    String    @unique
+  id       String  @id @default(cuid())
+  username String  @unique
+  email    String  @unique
   password String?
+
+  sessions   Session[]
+  workspaces WorkspaceMember[]
 }
 
 model Session {
@@ -20,4 +22,278 @@ model Session {
   userId    String
   expiresAt DateTime
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model Workspace {
+  id   String  @id @default(cuid())
+  name String
+  slug String  @unique
+  logo String?
+
+  gedType  String? @default("kdrive")
+  gedToken String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members             WorkspaceMember[]
+  cases               Case[]
+  contacts            Contact[]
+  tags                Tag[]
+  memberRoles         MemberRole[]
+  servicesModel       ServiceModel[]
+  services            Service[]
+  documents           Document[]
+  notes               Note[]
+  contactRoles        ContactRole[]
+  contactImplications ContactImplication[]
+}
+
+model WorkspaceMember {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspaceId String
+  workspace   Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  roleId      String
+  role        MemberRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  inChargeOf          Case[]               @relation("memberInChargeOfCase")
+  adminOf             Case[]               @relation("memberAdminOfCase")
+  notes               Note[]
+  createdContacts     Contact[]
+  createdCases        Case[]
+  createdImplications ContactImplication[]
+  createdContactRoles ContactRole[]
+
+  @@unique([userId, workspaceId])
+}
+
+model MemberRole {
+  id          String            @id @default(cuid())
+  name        String
+  description String?
+  // TODO: Permissions
+  workspaceId String
+  workspace   Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  members     WorkspaceMember[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@unique([name, workspaceId])
+}
+
+enum CaseState {
+  open
+  close
+  archived
+}
+
+model Case {
+  id          String    @id @default(cuid())
+  name        String
+  ref         Int
+  state       CaseState @default(open)
+  language    String?   @default("ch-fr")
+  openAt      DateTime?
+  closeAt     DateTime?
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberInChargeId    String
+  memberInCharge      WorkspaceMember      @relation("memberInChargeOfCase", map: "memberInChargeOfCase", fields: [memberInChargeId], references: [id], onDelete: Restrict)
+  memberAdminId       String?
+  memberAdmin         WorkspaceMember?     @relation("memberAdminOfCase", map: "memberAdminOfCase", fields: [memberAdminId], references: [id], onDelete: Restrict)
+  workspaceId         String
+  workspace           Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  clientId            String
+  client              Contact              @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  creatorId           String?
+  creator             WorkspaceMember?     @relation(fields: [creatorId], references: [id], onDelete: SetNull)
+  services            Service[]
+  notes               Note[]
+  tags                Tag[]
+  contactImplications ContactImplication[]
+
+  @@unique([workspaceId, ref])
+}
+
+model Tag {
+  id          String  @id @default(cuid())
+  name        String
+  color       String?
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workspaceId   String
+  workspace     Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  cases         Case[]
+  contacts      Contact[]
+  services      Service[]
+  servicesModel ServiceModel[]
+  notes         Note[]
+}
+
+model Contact {
+  id String @id @default(cuid())
+
+  // Basic
+  name          String
+  isMoralPerson Boolean @default(false)
+  firstName     String?
+  attentionTo   String?
+  language      String? @default("fr-ch")
+
+  // Address
+  country String? @default("ch") //https://fr.wikipedia.org/wiki/ISO_3166
+  zipCode String?
+  city    String?
+  street  String?
+
+  // Communication
+  email    String?
+  phone    String?
+  web      String?
+  greeting String?
+
+  // Complémentaire
+  note        String?
+  birthday    DateTime?
+  job         String?
+  civilStatus String?
+  partner     String?
+
+  // Finance
+  iban String?
+  tva  String?
+
+  // Relations
+  workspaceId  String
+  workspace    Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  cases        Case[]
+  tags         Tag[]
+  notes        Note[]
+  implications ContactImplication[]
+
+  creatorId String?
+  creator   WorkspaceMember? @relation(fields: [creatorId], references: [id], onDelete: SetNull)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model ContactImplication {
+  id          String           @id @default(cuid())
+  description String?
+  roles       ContactRole[]
+  contactId   String
+  contact     Contact          @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  caseId      String
+  case        Case             @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  creatorId   String?
+  creator     WorkspaceMember? @relation(fields: [creatorId], references: [id], onDelete: SetNull)
+  workspaceId String
+  workspace   Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([contactId, caseId])
+}
+
+model ContactRole {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  description String?
+
+  contacts    ContactImplication[]
+  creatorId   String?
+  creator     WorkspaceMember?     @relation(fields: [creatorId], references: [id], onDelete: SetNull)
+  workspaceId String
+  workspace   Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, workspaceId])
+}
+
+model ServiceModel {
+  id        String   @id @default(uuid())
+  name      String
+  amount    Decimal
+  quantity  Int
+  tags      Tag[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model Service {
+  id          String    @id @default(uuid())
+  caseId      String
+  case        Case      @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  name        String
+  amount      Decimal
+  quantity    Int
+  tags        Tag[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+enum NoteType {
+  note
+  document
+  task
+  event
+  phone
+  email
+  mail
+}
+
+enum NoteDirection {
+  input
+  output
+}
+
+model Note {
+  id         String         @id @default(uuid())
+  type       NoteType       @default(note)
+  direction  NoteDirection?
+  title      String
+  decription String?
+  documents  Document[]
+
+  dueDate DateTime? // type === 'task'
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  caseId String
+  case   Case   @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  workspaceId String
+  workspace   Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  members     WorkspaceMember[]
+  contacts    Contact[]
+  tags        Tag[]
+}
+
+model Document {
+  id String @id @default(uuid())
+
+  notes Note[]
+  // TODO https://developer.infomaniak.com/docs/api/get/2/drive/%7Bdrive_id%7D/files/%7Bfile_id%7D
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }

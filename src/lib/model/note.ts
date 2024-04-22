@@ -1,33 +1,12 @@
-import z from 'zod'
-import type { Prisma, Note } from '@prisma/client'
-import { toTuple, type ZodObj } from './utils'
+import type { Prisma } from '@prisma/client'
+import { z, toTuple, type ZodObj } from 'fuma'
+import { NOTE_DIRECTION_LABEL, NOTE_TYPE_LABEL } from '$lib/constants'
 
-type NoteCreateForm = Omit<Prisma.NoteUncheckedCreateInput, 'id' | 'workspaceId'>
-type NoteType = Note['type']
-type NoteDirection = NonNullable<Note['direction']>
-
-export const noteTypeLabel: Record<NoteType, string> = {
-	note: 'Note',
-	document: 'Document',
-	task: 'Tâche',
-	event: 'Évenement',
-	phone: 'Téléphone',
-	email: 'Email',
-	mail: 'Lettre',
-}
-
-export const noteDirectionLabel: Record<NoteDirection, string> = {
-	input: 'Entrant',
-	output: 'Sortant',
-}
-
-const noteForm = {
+export const modelNote = {
 	title: z.string().min(2),
-	type: z.enum(toTuple(noteTypeLabel)).optional(),
-	direction: z.enum(toTuple(noteDirectionLabel)).optional(),
-	caseId: z.string(),
-	decription: z.string().optional().nullable(),
-	dueDate: z.union([z.date(), z.string()]).optional().nullable(),
-} satisfies ZodObj<NoteCreateForm>
-
-export const noteShema = z.object(noteForm)
+	type: z.enum(toTuple(NOTE_TYPE_LABEL)).optional(),
+	direction: z.enum(toTuple(NOTE_DIRECTION_LABEL)).optional(),
+	case: z.relation.connect,
+	decription: z.string().optional(),
+	dueDate: z.union([z.date(), z.string()]).optional()
+} satisfies ZodObj<Omit<Prisma.NoteCreateInput, 'workspace'>>
