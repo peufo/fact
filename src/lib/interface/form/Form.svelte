@@ -1,73 +1,80 @@
-<script lang="ts">
-	import { onMount, createEventDispatcher, type ComponentProps } from 'svelte'
+<script lang="ts" context="module">
 	import type { z } from 'zod'
-	import debounce from 'debounce'
-	import { fade } from 'svelte/transition'
-	import type { FormEventHandler } from 'svelte/elements'
-	import type { SubmitFunction } from '@sveltejs/kit'
-	import { goto } from '$app/navigation'
-	import { page } from '$app/stores'
-	import { enhance } from '$app/forms'
+	import { inputsType, type InputsProps, type InputsType } from './Input.svelte'
 
-	import Input from './Input.svelte'
-	import FormSection from './FormSection.svelte'
+	type Shape = z.ZodRawShape
+	type Data<M extends Shape> = Partial<z.infer<z.ZodObject<M>>>
+	type BoolOrFunction<M extends Shape> = boolean | ((data: Data<M>) => unknown)
+	type PickOne<T> = {
+		[P in keyof T]: Record<P, T[P]> & Partial<Record<Exclude<keyof T, P>, undefined>>
+	}[keyof T]
 
-	type Shema = $$Generic<z.ZodRawShape>
-	type Data = Partial<z.infer<z.ZodObject<Shema>>>
-	type BoolOrFunction = boolean | ((data: Data) => unknown)
-
-	type FieldDef = {
-		key: string & keyof Shema
-		/** Default value */
-		value?: string | number | boolean | Date
-		/** overide shema.description */
-		label?: string
-		/** hint message include to input*/
-		hint?: string
+	type FormField<M extends Shape> = {
+		key: string & keyof M
 		/** number col used by field */
 		colSpan?: number
 		/** hide field if true */
-		hide?: BoolOrFunction
+		hide?: BoolOrFunction<M>
+	} & PickOne<InputsProps>
 
-		input?: ComponentProps<Input<any>>['input']
-	}
-
-	type SectionDef = {
+	type FormSectionProps<M extends Shape> = {
 		title?: string
 		/** Section is open */
 		active?: boolean
 		/** Section is always open*/
 		activable?: boolean
 		/** hide group if true */
-		hide?: BoolOrFunction
+		hide?: BoolOrFunction<M>
 	}
 
+	function initData<M extends Shape>(fields: FormField<M>[][]): Data<M> {
+		// @ts-ignore
+		return fields.flat().reduce((acc, cur) => {
+			const inputType = getFieldType(cur)
+			// @ts-ignore
+			return { ...acc, [cur.key]: cur[inputType]?.value }
+		})
+	}
+
+	function getFieldType<M extends Shape>(field: FormField<M>): InputsType {
+		const inputType = inputsType.find((t) => field[t])
+		if (!inputType) return 'text'
+		return inputType
+	}
+
+	//
+</script>
+
+<script lang="ts">
+	import { onMount } from 'svelte'
+	import { fade } from 'svelte/transition'
+	import { page } from '$app/stores'
+	import { useForm } from 'fuma'
+
+	import Input from './Input.svelte'
+	import FormSection from './FormSection.svelte'
+
+	type Shape = $$Generic<z.ZodRawShape>
 	let klass = ''
 	export { klass as class }
-	export let shema: z.ZodObject<Shema>
-	export let fields: FieldDef[][] = []
-	export let sections: SectionDef[] = [{}]
-	export let data: Data = fields.flat().reduce((acc, cur) => ({ ...acc, [cur.key]: cur.value }), {})
-	export let errors: Record<string, string> = {}
-	/** Include fields from shema without fieldDef (util for dev) */
-	export let includeGenericFields = false
-	export let dark = false
+	export let model: z.ZodObject<Shape>
+	export let fields: FormField<Shape>[][] = []
+	export let sections: FormSectionProps<Shape>[] = [{}]
+	export let data: Data<Shape> = initData(fields)
 
 	export let action = ''
 	export let actionDelete = ''
 
-	export let messageSuccess = 'Valider avec succès'
-	export let messageDelete = 'Supprimer avec succès'
-	export let successGoto = '' // TODO: handled in action redirect ?
-
-	export function set<K extends keyof Data>(key: K, value: Data[K]) {
+	export function set<K extends keyof Shape>(key: K, value: Data<Shape>[K]) {
 		data[key] = value
 	}
 
-	onMount(lookupValueFromParams)
+	export let onSuccess: (action: URL, data?: Data<Shape>) => any
+	const { enhance } = useForm<Data<Shape>>({
+		onSuccess
+	})
 
-	const notify = useNotify()
-	const dispatch = createEventDispatcher<{ success: Data; delete: void }>()
+	onMount(lookupValueFromParams)
 
 	function lookupValueFromParams() {
 		fields.flat().forEach(({ key }) => {
@@ -77,9 +84,10 @@
 		})
 	}
 
-	const getBoolean = (bool?: BoolOrFunction) => (_data: Data) =>
+	const getBoolean = (bool?: BoolOrFunction<Shape>) => (_data: Data<Shape>) =>
 		typeof bool === 'boolean' || bool === undefined ? !!bool : !!bool(_data)
 
+	/* TODO include this features on fuma/useForm
 	const handleInput: FormEventHandler<HTMLFormElement> = ({ target }) => {
 		if (!target) return
 		data = data
@@ -94,8 +102,8 @@
 		const v = typeMapValue[type] ?? value
 		if (v === undefined || name === undefined) return
 		if (name === undefined) return
-		if (!shema.shape[name]) return
-		const res = shema.shape[name].safeParse(v)
+		if (!model.shape[name]) return
+		const res = model.shape[name].safeParse(v)
 		if (res.success) {
 			addError.clear()
 			delete errors[name]
@@ -107,57 +115,15 @@
 	const addError = debounce((key: string, error: string) => {
 		errors = { ...errors, [key]: error }
 	}, 1500)
-
-	function handleFailure(issues: z.ZodIssue[]) {
-		errors = issues.reduce(
-			(acc, cur) => ({
-				...acc,
-				[cur.path[0]]: cur.message
-			}),
-			{}
-		)
-		const keys = fields.flat().map((f) => f.key)
-		const unknownError = Object.entries(errors).find(([key]) => !keys.includes(key))
-		if (unknownError) {
-			console.error('Unknow path leave an error', { [unknownError[0]]: unknownError[1] })
-		}
-	}
-
-	const submitFunction: SubmitFunction<Data> = ({ action }) => {
-		return async ({ result }) => {
-			if (result.type === 'error') {
-				notify.error('Oups, erreur non gerée')
-				return
-			}
-
-			if (result.type === 'failure') {
-				handleFailure(result.data?.issues)
-				notify.warning('Le formulaire est invalide')
-				return
-			}
-
-			if (result.type === 'success') {
-				const isActionDelete = basePath + actionDelete === action.pathname + action.search
-				if (isActionDelete) {
-					notify.success(messageDelete)
-					dispatch('delete')
-				} else {
-					notify.success(messageSuccess)
-					dispatch('success', result.data)
-				}
-				if (successGoto) goto(successGoto)
-			}
-		}
-	}
+	*/
 </script>
 
 <form
 	method="post"
-	action="{basePath}{action}"
+	{action}
 	enctype="multipart/form-data"
 	class="{klass} flex flex-col gap-4 p-4"
-	use:enhance={submitFunction}
-	on:input={handleInput}
+	use:enhance
 >
 	{#if data.id}
 		<input type="hidden" name="id" value={data.id} />
@@ -168,7 +134,6 @@
 		{#if !getBoolean(section?.hide)(data)}
 			<div class="contents" in:fade|local={{ duration: 200 }}>
 				<FormSection
-					{dark}
 					persistent
 					title={section.title}
 					active={section.active}
@@ -178,20 +143,16 @@
 					<div class="grid grid-cols-4 gap-x-4 gap-y-2">
 						{#each groupFields as field (field.key)}
 							{#if !getBoolean(field.hide)(data)}
+								{@const inputType = getFieldType(field)}
 								<div
 									style={`grid-column: span ${field.colSpan || 2};`}
 									in:fade|local={{ duration: 200 }}
 								>
 									<Input
-										on:blur={addError.flush}
-										{dark}
 										key={field.key}
-										input={field.input || { type: 'text' }}
-										hint={field.hint}
-										error={errors[field.key]}
-										label={field.label || shema.shape[field.key].description || field.key}
-										value={data[field.key]}
-										bind:_value={data[field.key]}
+										type={inputType}
+										bind:value={data[field.key]}
+										{...field[inputType]}
 									/>
 								</div>
 							{/if}
@@ -202,34 +163,11 @@
 		{/if}
 	{/each}
 
-	{#if includeGenericFields}
-		{@const keys = fields.flat().map((f) => f.key)}
-		{@const genericFields = Object.entries(shema.shape).filter(([key]) => !keys.includes(key))}
-		<section class="border-primary-lighter rounded-md border">
-			<div class="grid grid-cols-2 gap-x-4 gap-y-2 p-4">
-				<!-- Full generic method -->
-				{#each genericFields as [key, fieldShap]}
-					<Input
-						{key}
-						{dark}
-						label={fieldShap.description || key}
-						error={errors[key]}
-						on:blur={addError.flush}
-					/>
-				{:else}
-					Tout les champs sont gérés
-				{/each}
-			</div>
-		</section>
-	{/if}
-
-	<div class="col-span-full flex">
+	<div class="col-span-full flex gap-2">
 		{#if actionDelete}
-			<Button {dark} text attributs={{ formaction: `${basePath}${actionDelete}`, type: 'button' }}>
-				Supprimer
-			</Button>
+			<button class="btn btn-ghost" type="button" formaction={actionDelete}> Supprimer </button>
 		{/if}
 		<div class="grow" />
-		<Button {dark}>Valider</Button>
+		<button class="btn"> Valider </button>
 	</div>
 </form>

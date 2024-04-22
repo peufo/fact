@@ -29,10 +29,12 @@
 	} as const
 
 	export type Inputs = typeof inputs
-	export type InputTypes = keyof Inputs
-	export type InputProps<T extends InputTypes> = { type: T } & ComponentProps<
+	export type InputsType = keyof Inputs
+	export type InputProps<T extends InputsType> = { type: T } & ComponentProps<
 		InstanceType<Inputs[T]>
 	>
+	export type InputsProps = { [T in InputsType]: InputProps<T> }
+	export const inputsType = Object.keys(inputs) as InputsType[]
 
 	//
 </script>
