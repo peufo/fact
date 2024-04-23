@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation'
-	import Drawer from '$lib/material/Drawer.svelte'
-	import type Form from '$lib/material/Form.svelte'
 	import type { ContactImplication } from '@prisma/client'
-	import ContactImplicationForm from './ImplicationForm.svelte'
+	import { Drawer, type Form } from '$lib/interface'
+	import ImplicationForm from './ImplicationForm.svelte'
 
 	export let title = 'Nouvelle implication'
 	export let action = 'create'
@@ -13,7 +12,7 @@
 </script>
 
 <Drawer bind:this={drawer} {title} key="implication-form" value={action}>
-	<ContactImplicationForm
+	<ImplicationForm
 		action="/contact/implication?/{action}"
 		bind:form
 		{implication}

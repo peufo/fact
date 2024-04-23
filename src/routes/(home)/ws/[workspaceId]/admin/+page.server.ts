@@ -1,17 +1,17 @@
-import prisma from '$lib/prisma'
-import { parseFormData } from '$lib/formData'
-import { workspaceShema } from '$lib/shema'
+import { prisma } from '$lib/server'
+import { parseFormData } from 'fuma/server'
+import { modelWorkspace } from '$lib/model'
 
 export const actions = {
-	update: async ({ request, params }) => {
-		const { data, err } = await parseFormData(request, workspaceShema)
+	update: async ({ request, params: { workspaceId } }) => {
+		const { data, err } = await parseFormData(request, modelWorkspace)
 		if (err) return err
 
 		const workspace = await prisma.workspace.update({
-			data,
-			where: { slug: params.workspaceSlug },
+			where: { id: workspaceId },
+			data
 		})
 
 		return { workspace }
-	},
+	}
 }

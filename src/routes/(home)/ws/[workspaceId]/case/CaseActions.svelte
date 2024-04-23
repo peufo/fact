@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { mdiSquareEditOutline } from '@mdi/js'
+	import { Icon } from 'fuma'
 
 	import type { Case } from '@prisma/client'
-	import { workspacePath } from '$lib/store'
-	import IconButton from '$lib/material/IconButton.svelte'
+	import { ws } from '$lib/store'
 
 	let klass = ''
 	export { klass as class }
@@ -11,11 +11,8 @@
 	export let _case: Case
 </script>
 
-<div class="{klass} flex items-center gap-1 fill-primary-light stroke-none">
-	<IconButton
-		path={mdiSquareEditOutline}
-		title="Editer l'affaire"
-		href="{$workspacePath}/case/{_case.id}?case-form=update"
-		class="focus:opacity-100"
-	/>
+<div class="{klass} fill-primary-light flex items-center gap-1 stroke-none">
+	<a href="{$ws}/case/{_case.id}?case-form=update">
+		<Icon path={mdiSquareEditOutline} title="Editer l'affaire" class="focus:opacity-100" />
+	</a>
 </div>

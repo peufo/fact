@@ -20,13 +20,11 @@
 	export let data: CaseWithInclude | undefined = undefined
 	// TODO: find how to pass an arguments in Form
 	export let form: Form<any> | undefined = undefined
-
-	export let onSuccess: OnSuccess = () => {}
 </script>
 
 <Form
 	{data}
-	{onSuccess}
+	on:success
 	bind:this={form}
 	{action}
 	{actionDelete}

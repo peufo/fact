@@ -1,12 +1,9 @@
 <script lang="ts">
-	import { page } from '$app/stores'
-
-	import { getContactLabel } from '$lib/contact'
-	import Form from '$lib/material/Form.svelte'
-	import { contactImplicationShema } from '$lib/shema'
-	import { urlParam } from '$lib/store'
-	import { api } from '$lib/store/api'
+	import { component, urlParam } from 'fuma'
 	import type { ContactImplication } from '@prisma/client'
+
+	import { ContactLabel, Form, relationProps, relationsProps } from '$lib/interface'
+	import { api } from '$lib/store/api'
 
 	export let action = ''
 	export let actionDelete = ''
@@ -21,49 +18,47 @@
 	{action}
 	{actionDelete}
 	bind:this={form}
-	dark
 	data={implication}
-	shema={contactImplicationShema}
+	sections={[{ activable: false }]}
 	fields={[
 		[
 			{
-				key: 'contactId',
-				label: 'Contact',
-				value: $page.params.contactId,
-				input: {
-					type: 'relation',
+				key: 'contact',
+				relation: relationProps({
+					// TODO: load item from urlSearchParams 'contactId'
+					label: 'Contact',
 					search: $api.contact.search,
-					getItem: $api.contact.findOne,
-					getLabel: getContactLabel,
+					slotItem: (contact) => component(ContactLabel, { contact }),
 					createUrl: $urlParam.with({ 'contact-form': 'create' }),
-					createTitle: 'Nouveau contact',
-				},
+					createTitle: 'Nouveau contact'
+				})
 			},
 			{
-				key: 'caseId',
-				label: 'Affaire',
-				value: $page.params.caseId,
-				input: {
-					type: 'relation',
-					getItem: $api.case.findOne,
+				key: 'case',
+				relation: relationProps({
+					label: 'Affaire',
+					// TODO: load item from urlSearchParams 'caseId'
 					search: $api.case.search,
-					getLabel: (item) => item.name,
-				},
+					slotItem: (item) => item.name
+				})
 			},
 			{
 				key: 'roles',
-				label: 'Rôles',
 				colSpan: 4,
-				input: {
-					type: 'relations',
-					getItems: $api.role.findMany,
+				relations: relationsProps({
+					label: 'Rôles',
 					search: $api.role.search,
-					getLabel: (item) => item.name,
-					createUrl: $urlParam.with({ 'role-form': 'create' }),
-				},
+					slotItem: (item) => item.name,
+					createUrl: $urlParam.with({ 'role-form': 'create' })
+				})
 			},
-			{ key: 'description', label: 'Description', colSpan: 4, input: { type: 'textarea' } },
-		],
+			{
+				key: 'description',
+				colSpan: 4,
+				textarea: {
+					label: 'Description'
+				}
+			}
+		]
 	]}
-	sections={[{ activable: false }]}
 />

@@ -1,51 +1,47 @@
-import prisma from '$lib/prisma'
-import { parseFormData } from '$lib/formData'
-import { contactImplicationShema } from '$lib/shema'
-import { getSessionMember } from '$lib/session'
-import { fail } from '@sveltejs/kit'
+import { prisma } from '$lib/server'
+import { parseFormData } from 'fuma/server'
+import { modeContactImplication, modeContactImplicationUpdate } from '$lib/model'
+import { error, fail } from '@sveltejs/kit'
 
 export const actions = {
-	create: async ({ request, locals, params }) => {
-		const { data, err } = await parseFormData(request, contactImplicationShema)
+	create: async ({ request, locals: { user }, params: { workspaceId } }) => {
+		if (!user) error(401)
+		const { data, err } = await parseFormData(request, modeContactImplication)
 		if (err) return err
 
-		const member = await getSessionMember(locals, params)
 		const _case = await prisma.case.findUniqueOrThrow({
-			where: { id: data.caseId },
-			select: { clientId: true },
+			where: { id: data.case.connect.id },
+			select: { clientId: true }
 		})
-		if (_case.clientId === data.contactId)
+		if (_case.clientId === data.case.connect.id)
 			return fail(400, {
 				issues: [
 					{
-						path: ['contactId'],
-						message: 'Ce contact est déjà le client de cette affaire',
-					},
-				],
+						path: ['contact'],
+						message: 'Ce contact est déjà le client de cette affaire'
+					}
+				]
 			})
 		const implication = await prisma.contactImplication.create({
 			data: {
 				...data,
-				creatorId: member.id,
-				workspaceId: member.workspaceId,
-			},
+				creator: { connect: { userId_workspaceId: { userId: user.id, workspaceId } } },
+				workspace: { connect: { id: workspaceId } }
+			}
 		})
 
 		return implication
 	},
 
-	update: async ({ request }) => {
-		const { data, err, formData } = await parseFormData(request, contactImplicationShema, {
-			arrayOperation: 'set',
-		})
+	update: async ({ request, locals: { user } }) => {
+		if (!user) error(401)
+		const { data, err } = await parseFormData(request, modeContactImplicationUpdate)
 		if (err) return err
 
-		const id = formData.id as string
-
 		const implication = await prisma.contactImplication.update({
-			where: { id },
-			data,
+			where: { id: data.id },
+			data
 		})
 		return implication
-	},
+	}
 }

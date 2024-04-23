@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Form from '$lib/material/Form.svelte'
-	import { contactRoleShema } from '$lib/shema'
+	import { Form } from '$lib/interface'
 
 	export let action = ''
 	export let actionDelete = ''
@@ -8,16 +7,13 @@
 
 <Form
 	on:success
-	on:delete
 	{action}
 	{actionDelete}
-	dark
-	shema={contactRoleShema}
 	fields={[
 		[
-			{ key: 'name', label: 'Nom du rôle', colSpan: 4 },
-			{ key: 'description', label: 'Description', colSpan: 4, input: { type: 'textarea' } },
-		],
+			{ key: 'name', colSpan: 4, text: { label: 'Nom du rôle' } },
+			{ key: 'description', colSpan: 4, textarea: { label: 'Description' } }
+		]
 	]}
 	sections={[{ activable: false }]}
 />

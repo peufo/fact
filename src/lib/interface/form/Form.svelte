@@ -48,7 +48,7 @@
 </script>
 
 <script lang="ts">
-	import { onMount } from 'svelte'
+	import { createEventDispatcher, onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
 	import { page } from '$app/stores'
 	import { useForm } from 'fuma'
@@ -71,9 +71,12 @@
 		data[key] = value
 	}
 
-	export let onSuccess: OnSuccess = () => {}
+	const dispatch = createEventDispatcher<{ success: { action: URL; data?: Data<Shape> } }>()
+
 	const { enhance } = useForm<Data<Shape>>({
-		onSuccess,
+		onSuccess(action, data) {
+			dispatch('success', { action, data })
+		},
 		successMessage
 	})
 

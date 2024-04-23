@@ -1,7 +1,7 @@
-import prisma from '$lib/prisma'
+import { prisma } from '$lib/server'
 import { json } from '@sveltejs/kit'
 
-export const GET = async ({ params, url }) => {
+export const GET = async ({ url, params: { workspaceId } }) => {
 	const search = url.searchParams.get('search') || ''
 	const ids = url.searchParams.get('ids')
 
@@ -12,9 +12,9 @@ export const GET = async ({ params, url }) => {
 
 	const roles = await prisma.contactRole.findMany({
 		where: {
-			workspace: { slug: params.workspaceSlug },
-			OR: [{ name: { contains: search } }, { description: { contains: search } }],
-		},
+			workspaceId,
+			OR: [{ name: { contains: search } }, { description: { contains: search } }]
+		}
 	})
 	return json(roles)
 }

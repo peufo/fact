@@ -100,9 +100,10 @@
 <Drawer bind:this={drawerContact} title="Nouveau contact" key="contact-form" value="create">
 	<ContactForm
 		action="/contact?/create"
-		on:success={async ({ detail: contact }) => {
-			formCase?.set('clientId', contact.id)
-			formImplication?.set('contactId', contact.id)
+		on:success={async ({ detail: { data } }) => {
+			if (!data) return
+			formCase?.set('client', data.contact)
+			formImplication?.set('contact', data.contact)
 			await invalidate('contact')
 			await invalidate('case')
 			drawerContact.close()

@@ -4,44 +4,40 @@
 		mdiMapMarkerOutline,
 		mdiPhoneOutline,
 		mdiSquareEditOutline,
-		mdiWeb,
+		mdiWeb
 	} from '@mdi/js'
+	import { toast } from 'svelte-sonner'
+	import { Icon } from 'fuma'
 	import type { Contact } from '@prisma/client'
-	import IconButton from '$lib/material/IconButton.svelte'
-	import { workspacePath } from '$lib/store'
-	import { useNotify } from '$lib/notify'
+	import { ws } from '$lib/store'
 
 	let klass = ''
 	export { klass as class }
 	export let contact: Contact
-
-	const notify = useNotify()
 </script>
 
-<div class="{klass} flex items-center gap-1 fill-primary-light stroke-none">
+<div class="{klass} fill-primary-light flex items-center gap-1 stroke-none">
 	{#if contact.email}
-		<IconButton path={mdiEmailOutline} href="mailto:{contact.email}" title="Envoyer un email" />
+		<a class="btn btn-square btn-sm" href="mailto:{contact.email}">
+			<Icon path={mdiEmailOutline} title="Envoyer un email" />
+		</a>
 	{/if}
 	{#if contact.phone}
-		<IconButton path={mdiPhoneOutline} href="tel:{contact.phone}" title="Téléphoner" />
+		<a class="btn btn-square btn-sm" href="tel:{contact.phone}">
+			<Icon path={mdiPhoneOutline} title="Téléphoner" />
+		</a>
 	{/if}
 	{#if contact.web}
-		<IconButton
-			path={mdiWeb}
-			href="https://{contact.web.replace('https://', '')}"
+		<a
+			class="btn btn-square btn-sm"
 			target="_blank"
-			title="Acceder au site web"
-		/>
+			href="https://{contact.web.replace('https://', '')}"
+		>
+			<Icon path={mdiWeb} title="Acceder au site web" />
+		</a>
 	{/if}
-	<IconButton
-		path={mdiMapMarkerOutline}
-		title="Copier l'adresse"
-		on:click={() => notify.simple('TODO')}
-	/>
-	<IconButton
-		path={mdiSquareEditOutline}
-		title="Editer le contact"
-		href="{$workspacePath}/contact/{contact.id}?contact-form=update"
-		class="focus:opacity-100"
-	/>
+	<Icon path={mdiMapMarkerOutline} title="Copier l'adresse" on:click={() => toast.info('TODO')} />
+	<a class="btn btn-square btn-sm" href="{$ws}/contact/{contact.id}?contact-form=update">
+		<Icon path={mdiSquareEditOutline} title="Editer le contact" class="focus:opacity-100" />
+	</a>
 </div>

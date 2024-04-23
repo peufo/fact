@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { page } from '$app/stores'
-	import Form from '$lib/material/Form.svelte'
-	import { noteDirectionLabel, noteShema, noteTypeLabel } from '$lib/shema'
+	import { Form, relationProps } from '$lib/interface'
+	import { NOTE_DIRECTION_LABEL, NOTE_TYPE_LABEL } from '$lib/constants'
 	import { api } from '$lib/store/api'
 
 	export let action = ''
@@ -10,38 +9,50 @@
 
 <Form
 	on:success
-	on:delete
-	dark
 	{action}
 	{actionDelete}
-	shema={noteShema}
 	fields={[
 		[
 			{
 				key: 'title',
-				label: 'Titre',
-				input: { type: 'text', autocomplete: 'off', autofocus: true },
+				text: {
+					label: 'Titre',
+					input: {
+						autocomplete: 'off',
+						autofocus: true
+					}
+				}
 			},
 			{
-				key: 'caseId',
-				label: 'Affaire',
-				value: $page.params.caseId,
-				input: {
-					type: 'relation',
+				key: 'case',
+				relation: relationProps({
+					label: 'Affaire',
+					// TODO: load item from params.caseId
 					search: $api.case.search,
-					getItem: $api.case.findOne,
-					getLabel: (item) => item.name,
-				},
+					slotItem: (item) => item.name
+				})
 			},
-			{ key: 'type', label: 'Type', input: { type: 'select', items: noteTypeLabel } },
+			{
+				key: 'type',
+				select: {
+					options: NOTE_TYPE_LABEL
+				}
+			},
 			{
 				key: 'direction',
-				label: 'Sortant / Entrant',
-				input: { type: 'select', items: noteDirectionLabel },
-				hide: ({ type }) => !type || !['phone', 'email', 'mail'].includes(type),
+				select: {
+					options: NOTE_DIRECTION_LABEL
+				},
+				hide: ({ type }) => !type || !['phone', 'email', 'mail'].includes(type)
 			},
-			{ key: 'decription', label: 'Description', colSpan: 4, input: { type: 'textarea' } },
-		],
+			{
+				key: 'decription',
+				colSpan: 4,
+				textarea: {
+					label: 'Description'
+				}
+			}
+		]
 	]}
 	sections={[{ activable: false }]}
 />

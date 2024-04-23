@@ -1,6 +1,6 @@
 <script lang="ts">
-	import ActionBar from '$lib/layout/ActionBar.svelte'
-	import { urlParam } from '$lib/store'
+	import { urlParam } from 'fuma'
+	import { ActionBar } from '$lib/interface'
 </script>
 
 <ActionBar

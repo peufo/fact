@@ -1,13 +1,8 @@
-import prisma from '$lib/prisma'
+import { prisma } from '$lib/server'
 
-export const load = async ({ params, depends }) => {
-	depends('contact')
+export const load = async ({ params: { workspaceId } }) => {
 	const contacts = await prisma.contact.findMany({
-		where: {
-			workspace: {
-				slug: params.workspaceSlug,
-			},
-		},
+		where: { workspaceId }
 	})
 	return { contacts }
 }

@@ -1,24 +1,23 @@
-import { parseFormData } from '$lib/formData'
-import prisma from '$lib/prisma'
-import { getSessionMember } from '$lib/session.js'
-import { noteShema } from '$lib/shema'
+import { parseFormData } from 'fuma/server'
+import { prisma } from '$lib/server'
+import { modelNote } from '$lib/model'
+import { error } from '@sveltejs/kit'
 
 export const actions = {
-	create: async ({ request, locals, params }) => {
-		const { data, err } = await parseFormData(request, noteShema)
+	create: async ({ request, locals: { user }, params: { workspaceId } }) => {
+		if (!user) error(401)
+		const { data, err } = await parseFormData(request, modelNote)
 		if (err) return err
-
-		const member = await getSessionMember(locals, params)
 		const note = await prisma.note.create({
 			data: {
 				...data,
-				workspaceId: member.workspaceId,
+				workspace: { connect: { id: workspaceId } },
 				members: {
-					connect: { id: member.id },
-				},
-			},
+					connect: { userId_workspaceId: { userId: user.id, workspaceId } }
+				}
+			}
 		})
 
 		return { note }
-	},
+	}
 }

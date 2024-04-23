@@ -31,6 +31,12 @@ export const modeContactImplication = {
 	roles: z.relations.connect
 } satisfies ZodObj<Omit<Prisma.ContactImplicationCreateInput, 'workspace'>>
 
+export const modeContactImplicationUpdate = {
+	...modeContactImplication,
+	id: z.string(),
+	roles: z.relations.set
+} satisfies ZodObj<Omit<Prisma.ContactImplicationUpdateInput, 'workspace'>>
+
 export const modelContactRole = {
 	name: z.string(),
 	description: z.string().optional()

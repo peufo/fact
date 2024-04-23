@@ -1,14 +1,11 @@
 <script lang="ts">
 	import { mdiBadgeAccountHorizontalOutline, mdiBankOutline } from '@mdi/js'
 	import { page } from '$app/stores'
+	import { Icon } from 'fuma'
 
-	import { getContactLabel } from '$lib/contact'
-	import ActionBar from '$lib/layout/ActionBar.svelte'
-	import Icon from '$lib/material/Icon.svelte'
-	import List from '$lib/material/List.svelte'
+	import { ContactLabel, ActionBar, List, ListItem } from '$lib/interface'
+	import { ws } from '$lib/store'
 	import ContactActions from './Actions.svelte'
-	import { workspacePath } from '$lib/store'
-	import ListItem from '$lib/material/ListItem.svelte'
 
 	export let data
 </script>
@@ -19,20 +16,18 @@
 	titles={['Contacts']}
 />
 
-<div class="flex gap-4 h-full texture">
-	<List items={data.contacts} let:item={contact} class="shrink-0 border-r shadow-2xl bg-white">
+<div class="texture flex h-full gap-4">
+	<List items={data.contacts} let:item={contact} class="shrink-0 border-r bg-white shadow-2xl">
 		{@const isActive = $page.params.contactId === contact.id}
-		<ListItem {isActive} href="{$workspacePath}/contact/{contact.id}">
+		<ListItem {isActive} href="{$ws}/contact/{contact.id}">
 			<Icon
 				path={contact.isMoralPerson ? mdiBankOutline : mdiBadgeAccountHorizontalOutline}
 				class="fill-primary-light stroke-none"
 			/>
 
-			<span class="whitespace-nowrap grow " class:font-medium={isActive}>
-				{getContactLabel(contact)}
-			</span>
+			<ContactLabel {contact} class="grow whitespace-nowrap {isActive ? 'font-medium' : ''}" />
 
-			<ContactActions {contact} class="ml-4 invisible group-hover:visible" />
+			<ContactActions {contact} class="invisible ml-4 group-hover:visible" />
 		</ListItem>
 	</List>
 
