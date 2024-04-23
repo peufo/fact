@@ -12,6 +12,9 @@ export const load = async ({ parent, params: { workspaceId } }) => {
 					workspaceId
 				}
 			}
+		}),
+		workspace: await prisma.workspace.findUniqueOrThrow({
+			where: { id: workspaceId }
 		})
 	}
 }

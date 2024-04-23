@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CaseCard from './Card.svelte'
+	import CaseCard from './CaseCard.svelte'
 
 	export let data
 </script>

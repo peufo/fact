@@ -1,9 +1,14 @@
-import prisma from '$lib/prisma'
+import { prisma } from '$lib/server'
 
-export async function load({ params, depends }) {
-	depends('case')
-	const where = { workspace: { slug: params.workspaceSlug } }
+export async function load({ params: { workspaceId } }) {
 	return {
-		cases: await prisma.case.findMany({ where, include: { client: true } }),
+		cases: await prisma.case.findMany({
+			where: { workspaceId },
+			include: {
+				client: true,
+				memberInCharge: { include: { user: true } },
+				memberAdmin: { include: { user: true } }
+			}
+		})
 	}
 }

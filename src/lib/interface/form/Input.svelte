@@ -14,7 +14,7 @@
 	} from 'fuma'
 	import type { ComponentProps } from 'svelte'
 
-	const inputs = {
+	export const inputs = {
 		text: InputText,
 		textarea: InputTextarea,
 		boolean: InputBoolean,
@@ -24,24 +24,31 @@
 		password: InputPassword,
 		radio: InputRadio,
 		select: InputSelect,
-		relation: InputRelation,
-		relations: InputRelations
+		relation: InputRelation as typeof InputRelation<any>,
+		relations: InputRelations as typeof InputRelations<any>
 	} as const
 
 	export type Inputs = typeof inputs
 	export type InputsType = keyof Inputs
-	export type InputProps<T extends InputsType> = { type: T } & ComponentProps<
-		InstanceType<Inputs[T]>
-	>
+	export type InputProps<T extends InputsType> = ComponentProps<InstanceType<Inputs[T]>>
 	export type InputsProps = { [T in InputsType]: InputProps<T> }
-	export const inputsType = Object.keys(inputs) as InputsType[]
 
-	//
+	export const inputsType = Object.keys(inputs) as InputsType[]
+	export function relationProps<Item extends { id: string }>(
+		props: ComponentProps<InstanceType<typeof InputRelation<Item>>>
+	) {
+		return props
+	}
+	export function relationsProps<Item extends { id: string }>(
+		props: ComponentProps<InstanceType<typeof InputRelations<Item>>>
+	) {
+		return props
+	}
 </script>
 
 <script lang="ts">
 	type InputType = $$Generic<InputTypes>
-	type $$Props = InputProps<InputType>
+	type $$Props = InputProps<InputType> & { type: InputType }
 
 	$: ({ type: inputType, ...props } = $$props as $$Props)
 </script>

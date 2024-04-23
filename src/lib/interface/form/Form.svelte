@@ -42,6 +42,8 @@
 		return inputType
 	}
 
+	export type OnSuccess = (action: URL, data?: Data<Shape>) => any
+
 	//
 </script>
 
@@ -57,7 +59,7 @@
 	type Shape = $$Generic<z.ZodRawShape>
 	let klass = ''
 	export { klass as class }
-	export let model: z.ZodObject<Shape>
+
 	export let fields: FormField<Shape>[][] = []
 	export let sections: FormSectionProps<Shape>[] = [{}]
 	export let data: Data<Shape> = initData(fields)
@@ -69,7 +71,7 @@
 		data[key] = value
 	}
 
-	export let onSuccess: (action: URL, data?: Data<Shape>) => any
+	export let onSuccess: OnSuccess = () => {}
 	const { enhance } = useForm<Data<Shape>>({
 		onSuccess
 	})
@@ -88,6 +90,7 @@
 		typeof bool === 'boolean' || bool === undefined ? !!bool : !!bool(_data)
 
 	/* TODO include this features on fuma/useForm
+	// export let model: z.ZodObject<Shape>
 	const handleInput: FormEventHandler<HTMLFormElement> = ({ target }) => {
 		if (!target) return
 		data = data

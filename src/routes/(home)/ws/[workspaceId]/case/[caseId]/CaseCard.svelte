@@ -1,21 +1,20 @@
 <script lang="ts">
 	import { mdiClipboardTextClockOutline, mdiLightningBoltOutline } from '@mdi/js'
+	import { Icon, Card } from 'fuma'
 
 	import type { LayoutData } from './$types'
-	import Icon from '$lib/material/Icon.svelte'
-	import Section from '$lib/material/Section.svelte'
-	import { caseStateMap } from '$lib/shema'
-	import CaseActions from '../Actions.svelte'
-	import Badge from '$lib/material/Badge.svelte'
+	import { CASE_STATE_LABEL } from '$lib/constants'
+	import { Badge } from '$lib/interface'
+	import CaseActions from '../CaseActions.svelte'
 	import Contacts from './Contacts.svelte'
 
 	export let _case: LayoutData['case']
 </script>
 
-<div class="flex flex-col gap-2 border rounded-md px-4 py-2 shadow-xl bg-white">
+<div class="flex flex-col gap-2 rounded-md border bg-white px-4 py-2 shadow-xl">
 	<div class="flex items-center gap-2">
 		<Badge><b>{_case.ref}</b></Badge>
-		<Badge>{caseStateMap[_case.state]}</Badge>
+		<Badge>{CASE_STATE_LABEL[_case.state]}</Badge>
 		<h3 class="text-xl">{_case.name}</h3>
 		<div class="grow" />
 
@@ -23,14 +22,14 @@
 	</div>
 
 	{#if _case.description}
-		<p class="text-primary-light ">{_case.description}</p>
+		<p class="text-primary-light">{_case.description}</p>
 	{/if}
 
-	<div class="grid gap-4 grid-cols-2 fill-primary-light stroke-none mt-3">
+	<div class="fill-primary-light mt-3 grid grid-cols-2 gap-4 stroke-none">
 		<Contacts {_case} />
 
-		<Section>
-			<h4 slot="title" class="text-lg flex gap-2 py-2">
+		<Card>
+			<h4 slot="title" class="flex gap-2 py-2 text-lg">
 				<Icon path={mdiLightningBoltOutline} title="Préstation" class="rotate-12" />
 				Préstations
 			</h4>
@@ -39,10 +38,10 @@
 				<li>Préstation A</li>
 				<li>Préstation B</li>
 			</ul>
-		</Section>
+		</Card>
 
 		<!--
-		<Section>
+		<Card>
 			<h4 slot="title" class="text-lg flex gap-2 py-2">
 				<Icon path={mdiFileDocumentMultipleOutline} title="Documents" />
 				<span class="font-medium">3</span>
@@ -52,11 +51,11 @@
 				<li>TODO</li>
 				<li>Liste des documents joints aux notes</li>
 			</ul>
-		</Section>			
+		</Card>			
 		-->
 
-		<Section class="col-span-2">
-			<h4 slot="title" class="text-lg flex gap-2 py-2">
+		<Card class="col-span-2">
+			<h4 slot="title" class="flex gap-2 py-2 text-lg">
 				<Icon path={mdiClipboardTextClockOutline} title="Timeline" />
 				Chronologie de l'affaire
 			</h4>
@@ -67,6 +66,6 @@
 				<li>notes C</li>
 				<li>notes D</li>
 			</ul>
-		</Section>
+		</Card>
 	</div>
 </div>

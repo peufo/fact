@@ -2,13 +2,11 @@
 	import { mdiHomeCityOutline } from '@mdi/js'
 	import { invalidate } from '$app/navigation'
 
-	import { urlParam, Icon, InputSearch  } from 'fuma'
-	import { Header, MenuCreate /* Navbar*/ } from '$lib/layout'
-	import type  { Form } from '$lib/interface'
+	import { urlParam, Icon, InputSearch } from 'fuma'
+	import { Header, MenuCreate, Navigation } from '$lib/layout'
+	import { Drawer, type Form } from '$lib/interface'
 
-	import Drawer from '$lib/material/Drawer.svelte'
-	
-	import CaseForm from './case/Form.svelte'
+	import CaseForm from './case/CaseForm.svelte'
 	import ContactForm from './contact/Form.svelte'
 	import RoleForm from './contact/RoleForm.svelte'
 	import NoteForm from './note/Form.svelte'
@@ -27,25 +25,25 @@
 
 <Header>
 	<a
-		href="/workspace/{data.workspace.slug}"
+		href="/ws/{data.workspace.id}"
 		class="
-		text-xl flex gap-4 items-center h-full p-2 pr-4 group
-		bg-primary-darker text-primary-lighter
-		rounded-r-lg 
-		hover:rounded-r-[28px] hover:text-primary-lightest transition-all
+		bg-primary-darker text-primary-lighter hover:text-primary-lightest group flex h-full items-center gap-4
+		rounded-r-lg p-2
+		pr-4
+		text-xl transition-all hover:rounded-r-[28px]
 	"
 	>
 		{#if data.workspace.logo}
 			<img
 				src={data.workspace.logo}
 				alt="Logo de l'équipe"
-				class="rounded-lg group-hover:rounded-3xl transition-all"
+				class="rounded-lg transition-all group-hover:rounded-3xl"
 				height="40"
 				width="40"
 			/>
 		{:else}
 			<Icon
-				class="w-10 h-10 fill-primary-lighter stroke-primary-lighter"
+				class="fill-primary-lighter stroke-primary-lighter h-10 w-10"
 				path={mdiHomeCityOutline}
 			/>
 		{/if}
@@ -60,9 +58,9 @@
 </Header>
 
 <div class="flex grow overflow-auto">
-	<Navbar />
+	<Navigation />
 
-	<main class="grow flex flex-col">
+	<main class="flex grow flex-col">
 		<slot />
 	</main>
 </div>
@@ -73,7 +71,7 @@
 	key="case-form"
 	value="create"
 	class="transition-transform 
-		{$urlParam.hasValue('contact-form', 'create') ? 'scale-x-105 -translate-x-3' : ''}
+		{$urlParam.hasValue('contact-form', 'create') ? '-translate-x-3 scale-x-105' : ''}
 	"
 >
 	<CaseForm

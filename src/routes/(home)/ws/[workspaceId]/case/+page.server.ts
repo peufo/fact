@@ -1,31 +1,32 @@
-import { fail } from '@sveltejs/kit'
-import prisma from '$lib/prisma'
-import { caseShema } from '$lib/shema'
-import { parseFormData } from '$lib/formData'
-import { getSessionMember } from '$lib/session'
+import { error, fail } from '@sveltejs/kit'
+import { parseFormData, tryOrFail } from 'fuma/server'
+import { prisma } from '$lib/server'
+import { modelCase } from '$lib/model'
 
 export const actions = {
-	create: async ({ request, locals, params }) => {
-		const { data, err } = await parseFormData(request, caseShema)
-		if (err) return err
+	create: async ({ request, locals: { user }, params: { workspaceId } }) => {
+		if (!user) error(401)
 
-		const member = await getSessionMember(locals, params)
-		const refExist = await prisma.case.findFirst({
-			where: { workspaceId: member.workspaceId, ref: data.ref },
-		})
-		if (refExist)
-			return fail(400, {
-				issues: [{ path: ['ref'], message: 'Non disponible' }],
+		const { data, err } = await parseFormData(request, modelCase)
+		if (err) return err
+		return tryOrFail(async () => {
+			const caseAlreadyExist = await prisma.case.findFirst({
+				where: { workspaceId, ref: data.ref }
+			})
+			if (caseAlreadyExist)
+				return fail(400, {
+					issues: [{ path: ['ref'], message: 'Référence déjà prise' }]
+				})
+
+			const _case = await prisma.case.create({
+				data: {
+					...data,
+					creator: { connect: { userId_workspaceId: { userId: user.id, workspaceId } } },
+					workspace: { connect: { id: workspaceId } }
+				}
 			})
 
-		const _case = await prisma.case.create({
-			data: {
-				...data,
-				creatorId: member.id,
-				workspaceId: member.workspaceId,
-			},
+			return { case: _case }
 		})
-
-		return { case: _case }
-	},
+	}
 }
