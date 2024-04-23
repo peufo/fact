@@ -7,7 +7,7 @@
 	import { Drawer, type Form } from '$lib/interface'
 
 	import CaseForm from './case/CaseForm.svelte'
-	import ContactForm from './contact/Form.svelte'
+	import ContactForm from './contact/ContactForm.svelte'
 	import RoleForm from './contact/RoleForm.svelte'
 	import NoteForm from './note/Form.svelte'
 	import ContactImplicationDrawer from './contact/ImplicationDrawer.svelte'

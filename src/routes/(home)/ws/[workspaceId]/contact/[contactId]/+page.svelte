@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ContactCard from './Card.svelte'
+	import ContactCard from './ContactCard.svelte'
 
 	export let data
 </script>

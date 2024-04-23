@@ -15,14 +15,14 @@
 			{#if $page.data.workspace}
 				{$page.data.workspace.name}
 			{:else}
-				<span class="opacity-60">Sélectionner un espace de travail</span>
+				<span class="text-sm opacity-60">Sélectionner un espace de travail</span>
 			{/if}
 			<Icon path={mdiUnfoldMoreHorizontal} size={18} />
 		</button>
 
 		<div class="flex flex-col gap-1">
 			{#each workspaces as workspace}
-				<a href="/ws/{workspace.slug}" class="menu-item">
+				<a href="/ws/{workspace.id}" class="menu-item">
 					{workspace.name}
 				</a>
 			{/each}

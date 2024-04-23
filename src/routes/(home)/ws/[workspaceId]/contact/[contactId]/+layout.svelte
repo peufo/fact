@@ -3,9 +3,9 @@
 	import { invalidate, goto } from '$app/navigation'
 	import { page } from '$app/stores'
 
-	import ContactForm from '../Form.svelte'
-	import Drawer from '$lib/material/Drawer.svelte'
-	import { workspacePath } from '$lib/store'
+	import { Drawer } from '$lib/interface'
+	import { ws } from '$lib/store'
+	import ContactForm from '../ContactForm.svelte'
 
 	export let data
 	let drawer: Drawer
@@ -16,13 +16,13 @@
 	}
 
 	async function handleDelete() {
-		await goto(`${$workspacePath}/contact`)
+		await goto(`${$ws}/contact`)
 		await invalidate('contact')
 	}
 </script>
 
 {#key $page.params.contactId}
-	<div in:fade|local class="grow mx-auto max-w-3xl p-4">
+	<div in:fade|local class="mx-auto max-w-3xl grow p-4">
 		<slot />
 	</div>
 {/key}

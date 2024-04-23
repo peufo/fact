@@ -3,26 +3,25 @@
 		mdiBadgeAccountHorizontalOutline,
 		mdiBankOutline,
 		mdiClipboardTextClockOutline,
-		mdiClipboardTextOutline,
+		mdiClipboardTextOutline
 	} from '@mdi/js'
 
+	import { Icon, Card } from 'fuma'
 	import type { LayoutData } from './$types'
-	import Icon from '$lib/material/Icon.svelte'
-	import Section from '$lib/material/Section.svelte'
 	import ContactActions from '../Actions.svelte'
-	import { getContactLabel } from '$lib/contact'
 	import Cases from './Cases.svelte'
+	import { ContactLabel } from '$lib/interface'
 
 	export let contact: LayoutData['contact']
 </script>
 
-<div class="flex flex-col gap-2 border rounded-md px-4 py-2 shadow-xl bg-white text-primary">
+<div class="flex flex-col gap-2 rounded-md border bg-white px-4 py-2 text-primary shadow-xl">
 	<div class="flex items-center gap-2">
 		<Icon
 			path={contact.isMoralPerson ? mdiBankOutline : mdiBadgeAccountHorizontalOutline}
 			class="fill-primary-light stroke-none"
 		/>
-		<h3 class="text-xl">{getContactLabel(contact)}</h3>
+		<h3 class="text-xl"><ContactLabel {contact} /></h3>
 		<div class="grow" />
 
 		<ContactActions {contact} />
@@ -32,19 +31,19 @@
 		<p class="text-primary-light mb-3">{contact.note}</p>
 	{/if}
 
-	<div class="grid gap-4 grid-cols-2 fill-primary-light stroke-none mt-3">
+	<div class="fill-primary-light mt-3 grid grid-cols-2 gap-4 stroke-none">
 		<Cases {contact} />
 
-		<Section>
-			<h4 slot="title" class="text-lg flex gap-2 py-2">
+		<Card>
+			<h4 slot="title" class="flex gap-2 py-2 text-lg">
 				<Icon path={mdiClipboardTextOutline} title="Document" />
 				Documents
 			</h4>
 			<p>Documents en liens avec le contact</p>
-		</Section>
+		</Card>
 
-		<Section class="col-span-2">
-			<h4 slot="title" class="text-lg flex gap-2 py-2">
+		<Card class="col-span-2">
+			<h4 slot="title" class="flex gap-2 py-2 text-lg">
 				<Icon path={mdiClipboardTextClockOutline} title="Timeline" />
 				Chronologie du contact
 			</h4>
@@ -54,6 +53,6 @@
 				<li>Event C</li>
 				<li>Event D</li>
 			</ul>
-		</Section>
+		</Card>
 	</div>
 </div>

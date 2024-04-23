@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { tip, type TippyProps } from 'fuma'
-	import 'tippy.js/dist/tippy.css'
 
 	let klass = ''
 	export { klass as class }

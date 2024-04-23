@@ -66,14 +66,15 @@
 
 	export let action = ''
 	export let actionDelete = ''
-
+	export let successMessage = 'Succès'
 	export function set<K extends keyof Shape>(key: K, value: Data<Shape>[K]) {
 		data[key] = value
 	}
 
 	export let onSuccess: OnSuccess = () => {}
 	const { enhance } = useForm<Data<Shape>>({
-		onSuccess
+		onSuccess,
+		successMessage
 	})
 
 	onMount(lookupValueFromParams)
