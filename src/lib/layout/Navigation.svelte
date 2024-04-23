@@ -16,10 +16,8 @@
 
 <nav
 	style="height: calc(100vh - 50px)"
-	class="sticky bottom-0 top-[50px] flex flex-col items-center gap-2 px-1 py-2"
+	class="sticky bottom-0 top-[50px] flex flex-col items-center gap-2 px-1 pb-2"
 >
-	<div class="absolute top-0 h-px w-8 -translate-y-1/2 bg-primary" />
-
 	<NavigationItem href="{$ws}/case" icon={mdiFolderOpenOutline} label="Affaires" />
 	<NavigationItem href="{$ws}/contact" icon={mdiAccountGroup} label="Contacts" />
 	<NavigationItem href="{$ws}/note" icon={mdiClipboardTextMultipleOutline} label="Notes" />

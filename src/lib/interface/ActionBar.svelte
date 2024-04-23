@@ -9,9 +9,7 @@
 	export { klass as class }
 </script>
 
-<div
-	class="{klass} bg-primary-lighter/30 sticky top-0 flex items-center gap-1 p-2 backdrop-blur-sm"
->
+<div class="{klass} flex items-center gap-1 p-2">
 	{#each titles as title, index}
 		<h2
 			class="grid h-10 place-content-center px-3 text-xl font-medium uppercase tracking-wider opacity-75"

@@ -21,7 +21,7 @@
 			<Icon path={mdiUnfoldMoreHorizontal} size={18} />
 		</button>
 
-		<div class="z-20 flex flex-col gap-1 bg-base-300">
+		<div class="z-20 flex flex-col gap-1">
 			{#each workspaces as workspace}
 				<a href="/ws/{workspace.id}" class="menu-item">
 					<Icon path={mdiHomeOutline} size={18} />

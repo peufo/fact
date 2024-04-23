@@ -7,7 +7,7 @@
 	import MenuCreate from './MenuCreate.svelte'
 </script>
 
-<div class="sticky top-0 z-10 flex items-center gap-2 bg-base-100 p-2">
+<div class="sticky top-0 z-10 flex items-center gap-2 bg-base-100/50 p-2 backdrop-blur-sm">
 	{#if $page.data.user && $page.data.workspaces}
 		<MenuWorkspace workspaces={$page.data.workspaces} />
 	{:else}
@@ -16,10 +16,12 @@
 			Fact
 		</a>
 	{/if}
+	{#if $page.data.workspace}
+		<InputSearch />
+	{/if}
 
 	<div class="grow" />
 	{#if $page.data.workspace}
-		<InputSearch />
 		<MenuCreate />
 	{/if}
 
