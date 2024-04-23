@@ -56,11 +56,11 @@
 	]
 </script>
 
-<a href={$urlParam.with({ 'case-form': 'create' })}>
+<a href={$urlParam.with({ 'case-form': 'create' })} class="btn btn-square btn-ghost btn-sm">
 	<Icon title="Nouvelle affaire [a]" path={mdiFolderPlusOutline} />
 </a>
 
-<a href={$urlParam.with({ 'contact-form': 'create' })}>
+<a href={$urlParam.with({ 'contact-form': 'create' })} class="btn btn-square btn-ghost btn-sm">
 	<Icon title="Nouveau contact [c]" path={mdiAccountPlusOutline} />
 </a>
 
@@ -74,7 +74,11 @@
 		}
 	}}
 >
-	<a slot="activator" href={$urlParam.with({ 'note-form': 'create', type: 'note' })}>
+	<a
+		slot="activator"
+		href={$urlParam.with({ 'note-form': 'create', type: 'note' })}
+		class="btn btn-square btn-ghost btn-sm"
+	>
 		<Icon title="Nouvelle note [n]" path={mdiClipboardPlusOutline} tippyProps={{ delay: 500 }} />
 	</a>
 

@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { mdiHomeCityOutline } from '@mdi/js'
 	import { invalidate } from '$app/navigation'
 
-	import { urlParam, Icon, InputSearch } from 'fuma'
-	import { Header, MenuCreate, Navigation } from '$lib/layout'
+	import { urlParam } from 'fuma'
+	import { Navigation } from '$lib/layout'
 	import { Drawer, type Form } from '$lib/interface'
 
 	import CaseForm from './case/CaseForm.svelte'
@@ -23,44 +22,10 @@
 	let formImplication: Form<any>
 </script>
 
-<Header>
-	<a
-		href="/ws/{data.workspace.id}"
-		class="
-		bg-primary-darker text-primary-lighter hover:text-primary-lightest group flex h-full items-center gap-4
-		rounded-r-lg p-2
-		pr-4
-		text-xl transition-all hover:rounded-r-[28px]
-	"
-	>
-		{#if data.workspace.logo}
-			<img
-				src={data.workspace.logo}
-				alt="Logo de l'équipe"
-				class="rounded-lg transition-all group-hover:rounded-3xl"
-				height="40"
-				width="40"
-			/>
-		{:else}
-			<Icon
-				class="fill-primary-lighter stroke-primary-lighter h-10 w-10"
-				path={mdiHomeCityOutline}
-			/>
-		{/if}
-		<span>{data.workspace.name}</span>
-	</a>
-
-	<div class="grow" />
-
-	<InputSearch />
-
-	<MenuCreate />
-</Header>
-
-<div class="flex grow overflow-auto">
+<div style="min-height: calc(100vh - 50px)" class="flex gap-4">
 	<Navigation />
 
-	<main class="flex grow flex-col">
+	<main class="ml-14 flex grow flex-col">
 		<slot />
 	</main>
 </div>

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import {
 		mdiAccountGroup,
-		mdiFolderOpen,
 		mdiFileDocumentMultipleOutline,
 		mdiCalendarCheck,
 		mdiLightningBolt,
 		mdiLogout,
 		mdiCog,
-		mdiClipboardTextMultipleOutline
+		mdiClipboardTextMultipleOutline,
+		mdiFolderOpenOutline
 	} from '@mdi/js'
 
 	import { ws } from '$lib/store'
@@ -15,31 +15,19 @@
 </script>
 
 <nav
-	class="
-	  bg-primary-darker sticky top-0 z-10
-		flex flex-col items-center gap-2 py-2
-	"
+	style="height: calc(100vh - 50px)"
+	class="sticky bottom-0 top-[50px] flex flex-col items-center gap-2 px-1 py-2"
 >
 	<div class="absolute top-0 h-px w-8 -translate-y-1/2 bg-primary" />
 
-	<NavigationItem href="{$ws}/case" icon={mdiFolderOpen} label="Affaires" />
+	<NavigationItem href="{$ws}/case" icon={mdiFolderOpenOutline} label="Affaires" />
 	<NavigationItem href="{$ws}/contact" icon={mdiAccountGroup} label="Contacts" />
-	<NavigationItem
-		href="{$ws}/note"
-		icon={mdiClipboardTextMultipleOutline}
-		iconClass="stroke-none"
-		label="Notes"
-	/>
+	<NavigationItem href="{$ws}/note" icon={mdiClipboardTextMultipleOutline} label="Notes" />
 
 	<NavigationItem href="{$ws}/doc" icon={mdiFileDocumentMultipleOutline} label="Documents" />
 	<NavigationItem href="{$ws}/calendar" icon={mdiCalendarCheck} label="Évenements / tâches" />
 
-	<NavigationItem
-		href="{$ws}/work"
-		icon={mdiLightningBolt}
-		label="Prestations"
-		iconClass="rotate-12"
-	/>
+	<NavigationItem href="{$ws}/work" icon={mdiLightningBolt} label="Prestations" />
 
 	<div class="flex-grow" />
 

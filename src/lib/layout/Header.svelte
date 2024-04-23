@@ -1,25 +1,29 @@
 <script lang="ts">
 	import { mdiFileDocumentMultipleOutline } from '@mdi/js'
-	import { Icon, ToggleMode } from 'fuma'
+	import { Icon, InputSearch, ToggleMode } from 'fuma'
 	import MenuUser from './MenuUser.svelte'
 	import MenuWorkspace from './MenuWorkspace.svelte'
-	import type { Workspace } from '@prisma/client'
-
-	export let user: App.Locals['user'] = null
-	export let workspaces: Workspace[] = []
+	import { page } from '$app/stores'
+	import MenuCreate from './MenuCreate.svelte'
 </script>
 
-<div class="flex items-center gap-2 border-b p-2">
-	<a href="/" class="btn btn-ghost btn-sm">
-		<Icon path={mdiFileDocumentMultipleOutline} />
-		Fact
-	</a>
-	{#if user}
-		<MenuWorkspace {workspaces} />
+<div class="sticky top-0 z-10 flex items-center gap-2 bg-base-100 p-2">
+	{#if $page.data.user && $page.data.workspaces}
+		<MenuWorkspace workspaces={$page.data.workspaces} />
+	{:else}
+		<a href="/" class="btn btn-ghost btn-sm">
+			<Icon path={mdiFileDocumentMultipleOutline} />
+			Fact
+		</a>
 	{/if}
 
 	<div class="grow" />
+	{#if $page.data.workspace}
+		<InputSearch />
+		<MenuCreate />
+	{/if}
+
 	<ToggleMode />
 
-	<MenuUser {user} />
+	<MenuUser user={$page.data.user} />
 </div>

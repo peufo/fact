@@ -8,5 +8,5 @@ export const load = async ({ locals: { user } }) => {
 		where: { userId: user.id },
 		include: { workspace: true }
 	})
-	return { user, members }
+	return { user, members, workspaces: members.map((m) => m.workspace) }
 }
