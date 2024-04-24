@@ -51,6 +51,8 @@
 	type $$Props = InputProps<InputType> & { type: InputType }
 
 	$: ({ type: inputType, ...props } = $$props as $$Props)
+
+	$: if (props.value) console.log(props.value)
 </script>
 
 <svelte:component this={inputs[inputType]} {...props} />

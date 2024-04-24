@@ -8,7 +8,7 @@
 	import CaseForm from './case/CaseForm.svelte'
 	import ContactForm from './contact/ContactForm.svelte'
 	import RoleForm from './contact/RoleForm.svelte'
-	import NoteForm from './note/Form.svelte'
+	import NoteForm from './note/NoteForm.svelte'
 	import ContactImplicationDrawer from './contact/ImplicationDrawer.svelte'
 
 	export let data

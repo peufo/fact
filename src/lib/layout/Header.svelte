@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { mdiFileDocumentMultipleOutline } from '@mdi/js'
-	import { Icon, InputSearch, ToggleMode } from 'fuma'
+	import { Icon, InputSearch } from 'fuma'
 	import MenuUser from './MenuUser.svelte'
 	import MenuWorkspace from './MenuWorkspace.svelte'
 	import { page } from '$app/stores'
@@ -24,8 +24,6 @@
 	{#if $page.data.workspace}
 		<MenuCreate />
 	{/if}
-
-	<ToggleMode />
 
 	<MenuUser user={$page.data.user} />
 </div>

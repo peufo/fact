@@ -33,7 +33,7 @@
 			const inputType = getFieldType(cur)
 			// @ts-ignore
 			return { ...acc, [cur.key]: cur[inputType]?.value }
-		})
+		}, {})
 	}
 
 	function getFieldType<M extends Shape>(field: FormField<M>): InputsType {
@@ -63,6 +63,8 @@
 	export let fields: FormField<Shape>[][] = []
 	export let sections: FormSectionProps<Shape>[] = [{}]
 	export let data: Data<Shape> = initData(fields)
+
+	$: console.log({ data, fields: initData(fields) })
 
 	export let action = ''
 	export let actionDelete = ''
