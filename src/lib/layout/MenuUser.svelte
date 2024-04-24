@@ -7,7 +7,7 @@
 
 {#if user}
 	<DropDown>
-		<button slot="activator" class="btn btn-sm">
+		<button slot="activator" class="btn btn-ghost btn-sm">
 			<Icon path={mdiAccountOutline} />
 			<span>{user.username}</span>
 		</button>

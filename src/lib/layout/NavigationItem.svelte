@@ -20,7 +20,7 @@
 	/>
 	<div
 		class="absolute
-      left-full top-1/2 w-max -translate-y-1/2 translate-x-2
+      left-full top-1/2 w-max -translate-y-1/2 translate-x-1
       scale-0 rounded-lg bg-base-100 px-4 py-1
       opacity-0 shadow-lg transition-all
       group-hover:scale-100 group-hover:opacity-100

@@ -4,6 +4,7 @@ const daisyui = require('daisyui')
 const config = {
 	content: ['./src/**/*.{html,js,svelte,ts}', './node_modules/**/fuma/dist/**/*.svelte'],
 
+	darkMode: 'class',
 	theme: {
 		extend: {}
 	},

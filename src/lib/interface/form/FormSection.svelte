@@ -24,7 +24,7 @@
 
 <div>
 	{#if activable && active}
-		<div class="h-6" transition:slide></div>
+		<div class="h-4" transition:slide></div>
 	{/if}
 
 	<section
@@ -75,6 +75,6 @@
 		{/if}
 	</section>
 	{#if activable && active}
-		<div class="h-10" transition:slide></div>
+		<div class="h-8" transition:slide></div>
 	{/if}
 </div>
