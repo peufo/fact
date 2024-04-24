@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { component, urlParam } from 'fuma'
-	import { ContactLabel, Form, relationProps, type OnSuccess } from '$lib/interface'
+	import { ContactLabel, Form, relationProps } from '$lib/interface'
 
 	import type { Case, Contact, User, WorkspaceMember } from '@prisma/client'
 	import { CASE_STATE_LABEL } from '$lib/constants'
@@ -36,7 +36,10 @@
 				colSpan: 1,
 				number: {
 					label: "N° d'affaire",
-					value: String(nextRef)
+					value: String(nextRef),
+					input: {
+						min: 0
+					}
 				}
 			},
 			{

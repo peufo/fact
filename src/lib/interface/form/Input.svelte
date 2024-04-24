@@ -48,11 +48,11 @@
 
 <script lang="ts">
 	type InputType = $$Generic<InputTypes>
-	type $$Props = InputProps<InputType> & { type: InputType }
+	type $$Props = InputProps<InputType> & { type: InputType; value: InputProps<InputType>['value'] }
 
-	$: ({ type: inputType, ...props } = $$props as $$Props)
-
-	$: if (props.value) console.log(props.value)
+	let inputType: InputType
+	export { inputType as type }
+	export let value: InputProps<InputType>['value']
 </script>
 
-<svelte:component this={inputs[inputType]} {...props} />
+<svelte:component this={inputs[inputType]} bind:value {...$$restProps} />
