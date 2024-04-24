@@ -54,7 +54,7 @@
 				key: 'client',
 				relation: relationProps({
 					label: 'Client',
-					item: data?.client,
+					value: data?.client,
 					search: $api.contact.search,
 					createUrl: $urlParam.with({ 'contact-form': 'create' }),
 					createTitle: 'Nouveau client',
@@ -73,7 +73,7 @@
 				key: 'memberInCharge',
 				relation: relationProps({
 					label: 'Responsable',
-					item: data?.memberInCharge,
+					value: data?.memberInCharge,
 					search: $api.member.search,
 					slotItem: (member) => member.user.username
 				})
@@ -82,7 +82,7 @@
 				key: 'memberAdmin',
 				relation: relationProps({
 					label: 'Administrateur',
-					item: data?.memberAdmin,
+					value: data?.memberAdmin,
 					search: $api.member.search,
 					slotItem: (member) => member.user.username
 				})

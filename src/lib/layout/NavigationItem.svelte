@@ -6,6 +6,7 @@
 	export let icon: string
 	export let label: string
 	export let neverActive = false
+	export let iconClass = ''
 
 	$: isActive = !neverActive && $page.url.pathname.startsWith(href)
 </script>
@@ -13,7 +14,7 @@
 <a {href} class="group relative cursor-pointer px-2">
 	<Icon
 		path={icon}
-		class="
+		class="{iconClass}
 			btn btn-square btn-ghost btn-sm
 			{isActive ? 'active' : ''}
     "

@@ -25,7 +25,12 @@
 	<NavigationItem href="{$ws}/doc" icon={mdiFileDocumentMultipleOutline} label="Documents" />
 	<NavigationItem href="{$ws}/calendar" icon={mdiCalendarCheck} label="Évenements / tâches" />
 
-	<NavigationItem href="{$ws}/work" icon={mdiLightningBolt} label="Prestations" />
+	<NavigationItem
+		href="{$ws}/work"
+		icon={mdiLightningBolt}
+		label="Prestations"
+		iconClass="rotate-12"
+	/>
 
 	<div class="flex-grow" />
 
