@@ -170,11 +170,11 @@
 		{/if}
 	{/each}
 
-	<div class="col-span-full flex gap-2">
+	<div class="sticky bottom-0 col-span-full flex gap-2 py-4">
 		{#if actionDelete}
 			<button class="btn btn-ghost" type="button" formaction={actionDelete}> Supprimer </button>
 		{/if}
 		<div class="grow" />
-		<button class="btn"> Valider </button>
+		<button class="btn btn-primary"> Valider </button>
 	</div>
 </form>

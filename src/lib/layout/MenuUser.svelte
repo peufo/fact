@@ -15,7 +15,7 @@
 		<div class="flex flex-col gap-1">
 			<form action="/auth?/logout" method="post" class="contents">
 				<button class="menu-item">
-					<Icon path={mdiLogout} />
+					<Icon path={mdiLogout} size={18} />
 					Déconexion
 				</button>
 			</form>

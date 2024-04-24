@@ -5,7 +5,6 @@
 
 	export let title = ''
 	export let active = false
-	export let dark = false
 	export let activable = false
 	/** slot is juste hidden */
 	export let persistent = false
@@ -23,43 +22,59 @@
 	}
 </script>
 
-<section
-	class="
-		{klass} 
-		flex flex-col rounded-lg
-		{dark ? 'bg-primary-dark/30 text-primary-lightest' : 'border-primary-lightest/50 border'}
-	"
->
-	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<div
-		on:click={open}
-		on:keyup={open}
-		class="bg-primary-lighter/30 dark:bg-primary-dark/50 flex items-center gap-2 rounded-t-lg pl-4 pr-1"
-		class:cursor-pointer={activable && !active}
-		class:rounded-b-lg={activable && !active}
-	>
-		<slot name="title">
-			{#if activable || title}
-				<h2 class="py-2 text-lg" class:text-primary-lighter={dark}>
-					{title}
-				</h2>
-			{/if}
-		</slot>
-		{#if activable}
-			<div class="grow" />
-			<button class="btn btn-square" on:click={toggle}>
-				<Icon path={mdiChevronRight} class="transition-transform {active ? 'rotate-90' : ''}" />
-			</button>
-		{/if}
-	</div>
-
-	{#if active || !activable}
-		<div transition:slide|local={{ duration: 200 }} class="{contentClass} grow p-4">
-			<slot />
-		</div>
-	{:else if persistent}
-		<div class="{contentClass} hidden">
-			<slot />
-		</div>
+<div>
+	{#if activable && active}
+		<div class="h-6" transition:slide></div>
 	{/if}
-</section>
+
+	<section
+		class="{klass} flex flex-col bg-base-100"
+		class:rounded-lg={!active}
+		class:border={activable && !active}
+	>
+		<!-- svelte-ignore a11y-no-static-element-interactions -->
+		<div
+			on:click={open}
+			on:keyup={open}
+			class="flex items-center gap-2 py-2
+				{activable && !active ? 'cursor-pointer rounded-lg hover:bg-base-200/40' : ''}
+			"
+		>
+			<slot name="title">
+				{#if activable || title}
+					<h2
+						class="title-md origin-left pl-1 transition-transform"
+						class:translate-x-4={activable && !active}
+						class:scale-105={activable && active}
+					>
+						{title}
+					</h2>
+				{/if}
+			</slot>
+			{#if activable}
+				<div class="grow" />
+				<button
+					type="button"
+					on:click={toggle}
+					class="btn btn-square btn-ghost btn-sm transition-transform"
+					class:-translate-x-2={activable && !active}
+				>
+					<Icon path={mdiChevronRight} class="transition-transform {active ? 'rotate-90' : ''}" />
+				</button>
+			{/if}
+		</div>
+
+		{#if active || !activable}
+			<div transition:slide|local={{ duration: 200 }} class="{contentClass} grow py-4">
+				<slot />
+			</div>
+		{:else if persistent}
+			<div class="{contentClass} hidden">
+				<slot />
+			</div>
+		{/if}
+	</section>
+	{#if activable && active}
+		<div class="h-10" transition:slide></div>
+	{/if}
+</div>
