@@ -27,11 +27,7 @@
 		<div class="h-4" transition:slide></div>
 	{/if}
 
-	<section
-		class="{klass} flex flex-col bg-base-100"
-		class:rounded-lg={!active}
-		class:border={activable && !active}
-	>
+	<section class="{klass} flex flex-col bg-base-100">
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<div
 			on:click={open}
@@ -39,6 +35,8 @@
 			class="flex items-center gap-2 py-2
 				{activable && !active ? 'cursor-pointer rounded-lg hover:bg-base-200/40' : ''}
 			"
+			class:rounded-lg={!active}
+			class:border={activable && !active}
 		>
 			<slot name="title">
 				{#if activable || title}

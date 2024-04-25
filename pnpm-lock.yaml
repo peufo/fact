@@ -21,8 +21,8 @@ dependencies:
     specifier: ^2.0.0
     version: 2.0.0
   fuma:
-    specifier: ^0.1.10
-    version: 0.1.10(@sveltejs/kit@2.5.7)(svelte@4.2.15)
+    specifier: ^0.1.11
+    version: 0.1.11(@sveltejs/kit@2.5.7)(prisma@5.12.1)(svelte@4.2.15)
   lucia:
     specifier: ^3.1.1
     version: 3.1.1
@@ -456,6 +456,16 @@ packages:
       lucia: 3.x
     dependencies:
       '@prisma/client': 5.12.1(prisma@5.12.1)
+      lucia: 3.1.1
+    dev: false
+
+  /@lucia-auth/adapter-prisma@4.0.1(@prisma/client@5.13.0)(lucia@3.1.1):
+    resolution: {integrity: sha512-3SztRhj1RAHbbhI/0aB7YC5zl6Z6aktPhkWpn2CHhiB03B9x/+A+M6pqJuAt1usU8PzkjVilgRPhrPymMar66A==}
+    peerDependencies:
+      '@prisma/client': ^4.2.0 || ^5.0.0
+      lucia: 3.x
+    dependencies:
+      '@prisma/client': 5.13.0(prisma@5.12.1)
       lucia: 3.1.1
     dev: false
 
@@ -1104,6 +1114,19 @@ packages:
 
   /@prisma/client@5.12.1(prisma@5.12.1):
     resolution: {integrity: sha512-6/JnizEdlSBxDIdiLbrBdMW5NqDxOmhXAJaNXiPpgzAPr/nLZResT6MMpbOHLo5yAbQ1Vv5UU8PTPRzb0WIxdA==}
+    engines: {node: '>=16.13'}
+    requiresBuild: true
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+    dependencies:
+      prisma: 5.12.1
+    dev: false
+
+  /@prisma/client@5.13.0(prisma@5.12.1):
+    resolution: {integrity: sha512-uYdfpPncbZ/syJyiYBwGZS8Gt1PTNoErNYMuqHDa2r30rNSFtgTA/LXsSk55R7pdRTMi5pHkeP9B14K6nHmwkg==}
     engines: {node: '>=16.13'}
     requiresBuild: true
     peerDependencies:
@@ -2601,15 +2624,15 @@ packages:
     requiresBuild: true
     optional: true
 
-  /fuma@0.1.10(@sveltejs/kit@2.5.7)(svelte@4.2.15):
-    resolution: {integrity: sha512-WoShrisZYa0iWV3QAk1IkqF7Yumz/b4gMpHn8gqztOdEwmTGe2XjC2Y6XBR9hKlv5vcomVG+FzOVnTNR7aO9SQ==}
+  /fuma@0.1.11(@sveltejs/kit@2.5.7)(prisma@5.12.1)(svelte@4.2.15):
+    resolution: {integrity: sha512-eoKr4/0mwGUiLoY4e9fcv3VnLCxcOzcuQNjj9+LHZgYe8RQftzzkqBlsb7PZ+eGlaezZKO2tBoQvSNQVbPH7yw==}
     peerDependencies:
       '@sveltejs/kit': ^2.5.6
       svelte: ^4.0.0
     dependencies:
-      '@lucia-auth/adapter-prisma': 4.0.1(@prisma/client@5.12.1)(lucia@3.1.1)
+      '@lucia-auth/adapter-prisma': 4.0.1(@prisma/client@5.13.0)(lucia@3.1.1)
       '@mdi/js': 7.4.47
-      '@prisma/client': 5.12.1(prisma@5.12.1)
+      '@prisma/client': 5.13.0(prisma@5.12.1)
       '@sveltejs/kit': 2.5.7(@sveltejs/vite-plugin-svelte@3.1.0)(svelte@4.2.15)(vite@5.2.10)
       '@tiptap/core': 2.3.0(@tiptap/pm@2.3.0)
       '@tiptap/extension-color': 2.3.0(@tiptap/core@2.3.0)(@tiptap/extension-text-style@2.3.0)
@@ -2631,12 +2654,13 @@ packages:
       lucia: 3.1.1
       mode-watcher: 0.3.0(svelte@4.2.15)
       oslo: 1.2.0
-      prisma: 5.12.1
       svelte: 4.2.15
       svelte-easy-crop: 2.0.3(svelte@4.2.15)
       svelte-sonner: 0.3.22(svelte@4.2.15)
       tippy.js: 6.3.7
       zod: 3.22.5
+    transitivePeerDependencies:
+      - prisma
     dev: false
 
   /function-bind@1.1.2:

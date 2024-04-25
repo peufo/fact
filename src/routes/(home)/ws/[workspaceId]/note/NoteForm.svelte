@@ -11,6 +11,7 @@
 	on:success
 	{action}
 	{actionDelete}
+	classSection="pl-8 pr-4"
 	fields={[
 		[
 			{
@@ -35,12 +36,14 @@
 			{
 				key: 'type',
 				select: {
+					label: 'Type de note',
 					options: NOTE_TYPE_LABEL
 				}
 			},
 			{
 				key: 'direction',
 				select: {
+					label: 'Entrant / Sortant',
 					options: NOTE_DIRECTION_LABEL
 				},
 				hide: ({ type }) => !type || !['phone', 'email', 'mail'].includes(type)

@@ -26,6 +26,7 @@
 			{
 				key: 'gedType',
 				select: {
+					label: 'Type de GED',
 					options: ['kdrive', 'asdf']
 				}
 			},

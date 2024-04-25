@@ -59,6 +59,7 @@
 	type Shape = $$Generic<z.ZodRawShape>
 	let klass = ''
 	export { klass as class }
+	export let classSection = ''
 
 	export let fields: FormField<Shape>[][] = []
 	export let sections: FormSectionProps<Shape>[] = [{}]
@@ -131,7 +132,7 @@
 	method="post"
 	{action}
 	enctype="multipart/form-data"
-	class="{klass} flex flex-col gap-4 p-4"
+	class="{klass} flex flex-col gap-4"
 	use:enhance
 >
 	{#if data.id}
@@ -147,7 +148,7 @@
 					title={section.title}
 					active={section.active}
 					activable={section.activable !== false}
-					class="min-w-[480px]"
+					class="{classSection} min-w-[400px] max-w-full"
 				>
 					<div class="grid grid-cols-4 gap-x-4 gap-y-2">
 						{#each groupFields as field (field.key)}
@@ -172,7 +173,7 @@
 		{/if}
 	{/each}
 
-	<div class="sticky bottom-4 col-span-full flex gap-2 border-t pt-4 backdrop-blur-sm">
+	<div class="sticky bottom-0 col-span-full mt-2 flex gap-2 border-t px-4 py-4 backdrop-blur-sm">
 		{#if actionDelete}
 			<button class="btn-ghos btn text-error" type="button" formaction={actionDelete}>
 				Supprimer

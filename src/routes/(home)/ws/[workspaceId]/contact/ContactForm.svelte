@@ -13,7 +13,7 @@
 	{action}
 	{actionDelete}
 	data={contact}
-	class="max-w-lg"
+	classSection="pl-8 pr-4"
 	fields={[
 		[
 			{

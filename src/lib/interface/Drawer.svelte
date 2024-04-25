@@ -32,18 +32,21 @@
 		on:click={close}
 		on:keyup={close}
 		transition:fade={{ duration: 200 }}
-		class="fixed inset-0 z-10 bg-black/25 backdrop-blur-[1.5px] transition-opacity dark:bg-white/25"
+		class="
+			fixed inset-0 z-10 bg-black/25
+			backdrop-blur-[1.5px] transition-opacity dark:bg-white/25"
 	/>
 
 	<aside
 		transition:fly|local={{ x: 500, duration: 200 }}
+		style="max-width: min(100%, 36rem);"
 		class="{klass}
-      fixed bottom-0 right-0 top-0 z-10 flex w-fit min-w-[300px]
-			flex-col rounded-l-xl bg-base-100
+      fixed bottom-0 right-0 top-0 z-10 flex min-w-[300px]
+			flex-col overflow-y-scroll rounded-l-xl bg-base-100
     "
 	>
 		<div
-			class="flex items-center justify-between gap-32 border-b p-4 pl-8 dark:border-base-content/50"
+			class="sticky top-0 z-10 flex items-center justify-between gap-32 border-b bg-base-100 p-4 pl-8"
 		>
 			<h2 class="title">{title}</h2>
 			<button on:click={close} class="btn btn-square btn-sm">
@@ -51,7 +54,7 @@
 			</button>
 		</div>
 
-		<div class="grow overflow-y-scroll pl-4">
+		<div class="grow">
 			<slot />
 		</div>
 	</aside>

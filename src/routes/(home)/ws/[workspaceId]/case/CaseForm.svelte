@@ -28,7 +28,7 @@
 	bind:this={form}
 	{action}
 	{actionDelete}
-	class="max-w-lg"
+	classSection="pl-8 pr-4"
 	fields={[
 		[
 			{
@@ -68,6 +68,7 @@
 			{
 				key: 'state',
 				select: {
+					label: 'Status',
 					value: 'open',
 					options: CASE_STATE_LABEL
 				}
