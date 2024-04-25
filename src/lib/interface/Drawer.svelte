@@ -26,6 +26,16 @@
 	}
 </script>
 
+<svelte:head>
+	{#if active}
+		<style>
+			:root {
+				scrollbar-width: none;
+			}
+		</style>
+	{/if}
+</svelte:head>
+
 {#if active}
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div
