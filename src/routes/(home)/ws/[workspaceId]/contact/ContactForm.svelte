@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Contact } from '@prisma/client'
 	import { Form } from '$lib/interface'
+	import { ws } from '$lib/store'
 
 	export let action = ''
 	export let actionDelete = ''
@@ -12,6 +13,7 @@
 	on:delete
 	{action}
 	{actionDelete}
+	actionPrefix={$ws}
 	data={contact}
 	classSection="pl-8 pr-4"
 	fields={[

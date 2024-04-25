@@ -48,6 +48,8 @@
 </script>
 
 <script lang="ts">
+	import { toast } from 'svelte-sonner'
+
 	import { createEventDispatcher, onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
 	import { page } from '$app/stores'
@@ -65,10 +67,9 @@
 	export let sections: FormSectionProps<Shape>[] = [{}]
 	export let data: Data<Shape> = initData(fields)
 
-	$: console.log({ data, fields: initData(fields) })
-
 	export let action = ''
 	export let actionDelete = ''
+	export let actionPrefix = ''
 	export let successMessage = 'Succès'
 	export function set<K extends keyof Shape>(key: K, value: Data<Shape>[K]) {
 		data[key] = value
@@ -130,7 +131,7 @@
 
 <form
 	method="post"
-	{action}
+	action="{actionPrefix}{action}"
 	enctype="multipart/form-data"
 	class="{klass} flex flex-col gap-4"
 	use:enhance
@@ -175,7 +176,11 @@
 
 	<div class="sticky bottom-0 col-span-full mt-2 flex gap-2 border-t px-4 py-4 backdrop-blur-sm">
 		{#if actionDelete}
-			<button class="btn-ghos btn text-error" type="button" formaction={actionDelete}>
+			<button
+				class="btn-ghos btn text-error"
+				type="button"
+				formaction="{actionPrefix}{actionDelete}"
+			>
 				Supprimer
 			</button>
 		{/if}

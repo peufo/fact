@@ -1,7 +1,7 @@
-import { parseFormData } from 'fuma/server'
+import { parseFormData, tryOrFail } from 'fuma/server'
+import { error } from '@sveltejs/kit'
 import { prisma } from '$lib/server'
 import { modelContact } from '$lib/model'
-import { error } from '@sveltejs/kit'
 
 export const actions = {
 	create: async ({ request, locals: { user }, params: { workspaceId } }) => {
@@ -9,14 +9,14 @@ export const actions = {
 		const { data, err } = await parseFormData(request, modelContact)
 		if (err) return err
 
-		const contact = await prisma.contact.create({
-			data: {
-				...data,
-				creator: { connect: { userId_workspaceId: { userId: user.id, workspaceId } } },
-				workspace: { connect: { id: workspaceId } }
-			}
-		})
-
-		return contact
+		return tryOrFail(() =>
+			prisma.contact.create({
+				data: {
+					...data,
+					creator: { connect: { userId_workspaceId: { userId: user.id, workspaceId } } },
+					workspace: { connect: { id: workspaceId } }
+				}
+			})
+		)
 	}
 }

@@ -30,15 +30,7 @@
 	</main>
 </div>
 
-<Drawer
-	bind:this={drawerCase}
-	title="Nouvelle affaire"
-	key="case-form"
-	value="create"
-	class="transition-transform 
-		{$urlParam.hasValue('contact-form', 'create') ? '-translate-x-3 scale-x-105' : ''}
-	"
->
+<Drawer bind:this={drawerCase} title="Nouvelle affaire" key="case-form" value="create">
 	<CaseForm
 		action="/case?/create"
 		nextRef={data.casesCount + 1}
