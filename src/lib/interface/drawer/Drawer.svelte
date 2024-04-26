@@ -54,7 +54,7 @@
 
 	let klass = ''
 	export { klass as class }
-	export let maxWidth = '30rem'
+	export let maxWidth = '35rem'
 	export function open() {
 		goto($urlParam.with({ key: value }), { replaceState: true })
 	}
