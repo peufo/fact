@@ -6,30 +6,13 @@
 	import { Icon, urlParam } from 'fuma'
 
 	import { drawerLayers } from './store'
+	import { onDestroy } from 'svelte'
 
 	export let title = ''
 	/** Key used in url query params */
 	export let key: string
 	/** Value need to match in url query params*/
 	export let value = '1'
-
-	let isActive = false
-	let layerIndex = -1
-
-	page.subscribe(async ({ url }) => {
-		const _isActive = url.searchParams.get(key) === value
-		if (isActive === _isActive) return
-		isActive = _isActive
-		if (isActive) {
-			$drawerLayers = [...$drawerLayers, key]
-		} else {
-			$drawerLayers = [
-				...$drawerLayers.slice(0, layerIndex),
-				...$drawerLayers.slice(layerIndex + 1)
-			]
-		}
-		layerIndex = $drawerLayers.indexOf(key)
-	})
 
 	let klass = ''
 	export { klass as class }
@@ -40,6 +23,34 @@
 
 	export function close() {
 		goto($urlParam.without(key), { replaceState: true })
+	}
+
+	let isActive = false
+	let layerIndex = -1
+	let layerOffset = 0
+
+	onDestroy(() => {
+		if (layerIndex > -1) sliceDrawerLayer()
+	})
+
+	page.subscribe(async ({ url }) => {
+		isActive = url.searchParams.get(key) === value
+		if (!isActive && layerIndex === -1) return
+		if (isActive && layerIndex > -1) return
+		if (isActive) drawerLayers.update((layers) => [...layers, key])
+		else sliceDrawerLayer()
+	})
+
+	drawerLayers.subscribe((layers) => {
+		layerIndex = layers.indexOf(key)
+		layerOffset = layers.length - layerIndex - 1
+	})
+
+	function sliceDrawerLayer() {
+		drawerLayers.update((layers) => [
+			...layers.slice(0, layerIndex),
+			...layers.slice(layerIndex + 1)
+		])
 	}
 </script>
 
@@ -66,11 +77,7 @@
 
 	<aside
 		transition:fly|local={{ x: 500, duration: 200 }}
-		style="max-width: min(100%, 40rem); transform: translateX({-(
-			$drawerLayers.length -
-			layerIndex -
-			1
-		) * 4}rem);"
+		style="max-width: min(100%, 40rem); transform: translateX({-layerOffset * 4}rem);"
 		class="{klass}
       fixed bottom-0 right-0 top-0 z-10 flex min-w-[300px]
 			flex-col overflow-y-scroll bg-base-100 transition-transform
