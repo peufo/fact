@@ -1,12 +1,50 @@
+<script lang="ts" context="module">
+	import { derived, writable, type Readable } from 'svelte/store'
+	import { createId } from '@paralleldrive/cuid2'
+	import { page } from '$app/stores'
+
+	const layers = writable<string[]>([])
+	const layersOffset = derived<Readable<string[]>, Record<string, number>>(layers, (ids) => {
+		const nbDrawer = ids.length
+		return ids.reduce((acc, id, index) => {
+			const drawerOffset = nbDrawer - index - 1
+			return { ...acc, [id]: drawerOffset }
+		}, {})
+	})
+
+	function subscibeDrawerLayers(key: string, value: string) {
+		const layerId = createId()
+		const isActive = derived(page, ({ url }) => url.searchParams.get(key) === value)
+		const isActiveUnsubscribe = isActive.subscribe((_isActive) => {
+			if (_isActive) layers.update((ids) => [...ids, layerId])
+			else removeLayer()
+		})
+
+		function removeLayer() {
+			layers.update((ids) => {
+				const index = ids.indexOf(layerId)
+				return ids.toSpliced(index, 1)
+			})
+		}
+
+		return {
+			isActive,
+			offset: derived(layersOffset, (drawers) => drawers[layerId]),
+			destroy() {
+				removeLayer()
+				isActiveUnsubscribe()
+			}
+		}
+	}
+</script>
+
 <script lang="ts">
 	import { fade, fly } from 'svelte/transition'
 	import { mdiClose } from '@mdi/js'
-	import { page } from '$app/stores'
+
 	import { goto } from '$app/navigation'
 	import { Icon, urlParam } from 'fuma'
-
-	import { drawerLayers } from './store'
-	import { onDestroy } from 'svelte'
+	import { onDestroy, onMount } from 'svelte'
 
 	export let title = ''
 	/** Key used in url query params */
@@ -16,46 +54,20 @@
 
 	let klass = ''
 	export { klass as class }
-
+	export let maxWidth = '30rem'
 	export function open() {
 		goto($urlParam.with({ key: value }), { replaceState: true })
 	}
-
 	export function close() {
 		goto($urlParam.without(key), { replaceState: true })
 	}
 
-	let isActive = false
-	let layerIndex = -1
-	let layerOffset = 0
-
-	onDestroy(() => {
-		if (layerIndex > -1) sliceDrawerLayer()
-	})
-
-	page.subscribe(async ({ url }) => {
-		isActive = url.searchParams.get(key) === value
-		if (!isActive && layerIndex === -1) return
-		if (isActive && layerIndex > -1) return
-		if (isActive) drawerLayers.update((layers) => [...layers, key])
-		else sliceDrawerLayer()
-	})
-
-	drawerLayers.subscribe((layers) => {
-		layerIndex = layers.indexOf(key)
-		layerOffset = layers.length - layerIndex - 1
-	})
-
-	function sliceDrawerLayer() {
-		drawerLayers.update((layers) => [
-			...layers.slice(0, layerIndex),
-			...layers.slice(layerIndex + 1)
-		])
-	}
+	const { offset, destroy, isActive } = subscibeDrawerLayers(key, value)
+	onDestroy(destroy)
 </script>
 
 <svelte:head>
-	{#if isActive}
+	{#if $isActive}
 		<style>
 			:root {
 				scrollbar-width: none;
@@ -64,7 +76,7 @@
 	{/if}
 </svelte:head>
 
-{#if isActive}
+{#if $isActive}
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div
 		on:click={close}
@@ -77,9 +89,9 @@
 
 	<aside
 		transition:fly|local={{ x: 500, duration: 200 }}
-		style="max-width: min(100%, 40rem); transform: translateX({-layerOffset * 4}rem);"
+		style="max-width: min(100%, {maxWidth}); transform: translateX({-$offset * 4}rem);"
 		class="{klass}
-      fixed bottom-0 right-0 top-0 z-10 flex min-w-[300px]
+      fixed bottom-0 right-0 top-0 z-10 flex
 			flex-col overflow-y-scroll bg-base-100 transition-transform
     "
 	>

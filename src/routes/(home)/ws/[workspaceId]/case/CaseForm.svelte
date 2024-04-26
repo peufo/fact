@@ -6,7 +6,6 @@
 	import { CASE_STATE_LABEL } from '$lib/constants'
 
 	import { api } from '$lib/store/api'
-
 	type CaseWithInclude = Case & {
 		client: Contact
 		memberInCharge: WorkspaceMember & { user: User }

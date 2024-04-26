@@ -48,8 +48,6 @@
 </script>
 
 <script lang="ts">
-	import { toast } from 'svelte-sonner'
-
 	import { createEventDispatcher, onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
 	import { page } from '$app/stores'
