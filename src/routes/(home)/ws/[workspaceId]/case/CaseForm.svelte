@@ -15,10 +15,9 @@
 
 	export let action = ''
 	export let actionDelete = ''
-	export let nextRef: number = 0
 
-	export let data: CaseWithInclude | undefined = undefined
-	// TODO: find how to pass an arguments in Form
+	export let data: Partial<CaseWithInclude> | undefined = undefined
+
 	export let form: Form<any> | undefined = undefined
 </script>
 
@@ -36,7 +35,6 @@
 				colSpan: 1,
 				number: {
 					label: "N° d'affaire",
-					value: String(nextRef),
 					input: {
 						min: 0
 					}

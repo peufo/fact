@@ -33,8 +33,10 @@
 <Drawer bind:this={drawerCase} title="Nouvelle affaire" key="case-form" value="create">
 	<CaseForm
 		action="/case?/create"
-		nextRef={data.casesCount + 1}
 		bind:form={formCase}
+		data={{
+			ref: data.casesCount + 1
+		}}
 		on:success={async () => {
 			await invalidate('case')
 			drawerCase.close()
