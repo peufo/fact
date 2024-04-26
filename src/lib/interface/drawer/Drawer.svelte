@@ -89,7 +89,7 @@
 				gap-32 border-b bg-base-100 p-4 pl-8
 			"
 		>
-			<h2 class="title">{title} {layerIndex}</h2>
+			<h2 class="title">{title}</h2>
 			<button on:click={close} class="btn btn-square btn-sm">
 				<Icon path={mdiClose} title="annuler" />
 			</button>
