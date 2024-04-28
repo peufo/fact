@@ -35,7 +35,9 @@
 				number: {
 					label: "N° d'affaire",
 					input: {
-						min: 0
+						min: 0,
+						size: 1,
+						style: 'width: minmax(2rem, 100%);'
 					}
 				}
 			},
