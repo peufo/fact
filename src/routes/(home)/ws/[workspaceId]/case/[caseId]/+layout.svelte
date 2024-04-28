@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition'
 	import { page } from '$app/stores'
 	import { invalidate, goto } from '$app/navigation'
-	import { Drawer } from '$lib/interface'
+	import { Drawer } from 'fuma'
 	import { ws } from '$lib/store'
 	import CaseForm from '../CaseForm.svelte'
 

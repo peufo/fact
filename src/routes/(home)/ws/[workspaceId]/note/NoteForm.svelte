@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Form, relationProps } from '$lib/interface'
+	import { Form, relationProps } from 'fuma'
 	import { NOTE_DIRECTION_LABEL, NOTE_TYPE_LABEL } from '$lib/constants'
 	import { api } from '$lib/store/api'
 
@@ -57,5 +57,4 @@
 			}
 		]
 	]}
-	sections={[{ activable: false }]}
 />

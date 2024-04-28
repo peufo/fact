@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Form } from '$lib/interface'
+	import { Form } from 'fuma'
 
 	export let action = ''
 	export let actionDelete = ''
@@ -15,5 +15,4 @@
 			{ key: 'description', colSpan: 4, textarea: { label: 'Description' } }
 		]
 	]}
-	sections={[{ activable: false }]}
 />

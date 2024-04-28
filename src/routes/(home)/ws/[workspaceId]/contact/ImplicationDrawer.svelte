@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation'
 	import type { ContactImplication } from '@prisma/client'
-	import { Drawer, type Form } from '$lib/interface'
+	import { Drawer, type Form } from 'fuma'
 	import ImplicationForm from './ImplicationForm.svelte'
 
 	export let title = 'Nouvelle implication'

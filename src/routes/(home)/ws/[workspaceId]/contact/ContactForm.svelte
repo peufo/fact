@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Contact } from '@prisma/client'
-	import { Form } from '$lib/interface'
+	import { Form } from 'fuma'
 	import { ws } from '$lib/store'
 
 	export let action = ''
@@ -88,10 +88,10 @@
 		]
 	]}
 	sections={[
-		{ activable: false },
-		{ title: 'Adresse postale' },
-		{ title: 'Contact' },
-		{ title: 'Finance' },
-		{ title: 'Informations complémentaires' }
+		{},
+		{ isReducible: true, title: 'Adresse postale' },
+		{ isReducible: true, title: 'Contact' },
+		{ isReducible: true, title: 'Finance' },
+		{ isReducible: true, title: 'Informations complémentaires' }
 	]}
 />

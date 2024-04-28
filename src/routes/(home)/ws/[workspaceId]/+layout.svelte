@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation'
+	import { Drawer, type Form } from 'fuma'
 
-	import { urlParam } from 'fuma'
 	import { Navigation } from '$lib/layout'
-	import { Drawer, type Form } from '$lib/interface'
 
 	import CaseForm from './case/CaseForm.svelte'
 	import ContactForm from './contact/ContactForm.svelte'

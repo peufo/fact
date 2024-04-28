@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { component, urlParam } from 'fuma'
-	import { ContactLabel, Form, relationProps } from '$lib/interface'
+	import { component, urlParam, Form, relationProps } from 'fuma'
+	import { ContactLabel } from '$lib/interface'
 
 	import type { Case, Contact, User, WorkspaceMember } from '@prisma/client'
 	import { CASE_STATE_LABEL } from '$lib/constants'
@@ -115,5 +115,5 @@
 			{ key: 'language', text: { label: 'Langue' } }
 		]
 	]}
-	sections={[{ activable: false }, { title: 'Compléments' }]}
+	sections={[{}, { title: 'Compléments', isReducible: true }]}
 />

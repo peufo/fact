@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { CardBasic } from 'fuma'
+	import { CardBasic, Form } from 'fuma'
 	import { invalidate } from '$app/navigation'
-	import { Form } from '$lib/interface'
 
 	export let data
 </script>
@@ -39,10 +38,7 @@
 			}
 		]
 	]}
-	sections={[
-		{ title: "L'espace de travail", activable: false },
-		{ title: 'Gestion des documents', activable: false }
-	]}
+	sections={[{ title: "L'espace de travail" }, { title: 'Gestion des documents' }]}
 />
 
 <CardBasic title="TODO">

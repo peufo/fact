@@ -2,8 +2,8 @@
 	import { fade } from 'svelte/transition'
 	import { invalidate, goto } from '$app/navigation'
 	import { page } from '$app/stores'
+	import { Drawer } from 'fuma'
 
-	import { Drawer } from '$lib/interface'
 	import { ws } from '$lib/store'
 	import ContactForm from '../ContactForm.svelte'
 

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { component, urlParam } from 'fuma'
+	import { component, urlParam, Form, relationProps, relationsProps } from 'fuma'
 	import type { ContactImplication } from '@prisma/client'
 
-	import { ContactLabel, Form, relationProps, relationsProps } from '$lib/interface'
+	import { ContactLabel } from '$lib/interface'
 	import { api } from '$lib/store/api'
 
 	export let action = ''
@@ -19,7 +19,6 @@
 	{actionDelete}
 	bind:this={form}
 	data={implication}
-	sections={[{ activable: false }]}
 	fields={[
 		[
 			{
