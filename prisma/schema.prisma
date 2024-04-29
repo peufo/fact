@@ -263,12 +263,12 @@ enum NoteDirection {
 }
 
 model Note {
-  id         String         @id @default(uuid())
-  type       NoteType       @default(note)
-  direction  NoteDirection?
-  title      String
-  decription String?
-  documents  Document[]
+  id        String         @id @default(uuid())
+  type      NoteType       @default(note)
+  direction NoteDirection?
+  name      String?
+  content   String
+  documents Document[]
 
   dueDate DateTime? // type === 'task'
 

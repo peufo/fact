@@ -6,7 +6,7 @@ export const GET = async ({ url, params: { workspaceId } }) => {
 	const notes = await prisma.note.findMany({
 		where: {
 			workspaceId,
-			OR: [{ title: { contains: search } }, { decription: { contains: search } }]
+			OR: [{ name: { contains: search } }, { content: { contains: search } }]
 		}
 	})
 	return json(notes)

@@ -16,16 +16,6 @@
 	fields={[
 		[
 			{
-				key: 'title',
-				text: {
-					label: 'Titre',
-					input: {
-						autocomplete: 'off',
-						autofocus: true
-					}
-				}
-			},
-			{
 				key: 'case',
 				relation: relationProps({
 					label: 'Affaire',
@@ -50,10 +40,22 @@
 				hide: ({ type }) => !type || !['phone', 'email', 'mail'].includes(type)
 			},
 			{
-				key: 'decription',
+				key: 'name',
+				colSpan: 4,
+				hide: (item) => !item.id,
+				text: {
+					label: 'Nom de la note',
+					input: {
+						autocomplete: 'off',
+						autofocus: true
+					}
+				}
+			},
+			{
+				key: 'content',
 				colSpan: 4,
 				textrich: {
-					label: 'Description'
+					label: 'Contenu'
 				}
 			}
 		]
