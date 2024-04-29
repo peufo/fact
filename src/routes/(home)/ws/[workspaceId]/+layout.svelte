@@ -60,8 +60,8 @@
 		action="/contact?/create"
 		on:success={async ({ detail: { data } }) => {
 			if (!data) return
-			formCase?.set('client', data.contact)
-			formImplication?.set('contact', data.contact)
+			formCase?.set('client', data)
+			formImplication?.set('contact', data)
 			await invalidate('contact')
 			await invalidate('case')
 			drawerContact.close()

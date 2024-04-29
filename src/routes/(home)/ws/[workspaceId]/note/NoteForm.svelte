@@ -2,6 +2,7 @@
 	import { Form, relationProps } from 'fuma'
 	import { NOTE_DIRECTION_LABEL, NOTE_TYPE_LABEL } from '$lib/constants'
 	import { api } from '$lib/store/api'
+	import { ws } from '$lib/store'
 
 	export let action = ''
 	export let actionDelete = ''
@@ -11,6 +12,7 @@
 	on:success
 	{action}
 	{actionDelete}
+	actionPrefix={$ws}
 	fields={[
 		[
 			{
@@ -50,7 +52,7 @@
 			{
 				key: 'decription',
 				colSpan: 4,
-				textarea: {
+				textrich: {
 					label: 'Description'
 				}
 			}

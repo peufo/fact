@@ -8,7 +8,7 @@ export const modelContact = {
 	attentionTo: z.string().optional(),
 	language: z.string().optional().default('fr-ch'),
 	country: z.string().optional(),
-	zipCode: z.string().regex(/\d{4}/).length(4).optional(),
+	zipCode: z.string().min(4).max(4).or(z.string().optional()),
 	city: z.string().optional(),
 	street: z.string().optional(),
 	email: z.string().optional(),

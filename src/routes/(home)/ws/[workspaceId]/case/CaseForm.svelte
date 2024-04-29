@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { component, urlParam, Form, relationProps } from 'fuma'
-	import { ContactLabel } from '$lib/interface'
+	import { urlParam, Form, relationProps } from 'fuma'
 
 	import type { Case, Contact, User, WorkspaceMember } from '@prisma/client'
 	import { CASE_STATE_LABEL } from '$lib/constants'
 
 	import { api } from '$lib/store/api'
+	import { ws } from '$lib/store'
 	type CaseWithInclude = Case & {
 		client: Contact
 		memberInCharge: WorkspaceMember & { user: User }
@@ -16,7 +16,6 @@
 	export let actionDelete = ''
 
 	export let data: Partial<CaseWithInclude> | undefined = undefined
-
 	export let form: Form<any> | undefined = undefined
 </script>
 
@@ -26,6 +25,7 @@
 	bind:this={form}
 	{action}
 	{actionDelete}
+	actionPrefix={$ws}
 	fields={[
 		[
 			{
@@ -59,8 +59,7 @@
 					search: $api.contact.search,
 					createUrl: $urlParam.with({ 'contact-form': 'create' }),
 					createTitle: 'Nouveau client',
-					slotItem: (contact) => component(ContactLabel, { contact }),
-					slotSuggestion: (contact) => component(ContactLabel, { contact })
+					slotItem: (contact) => `${contact.firstName} ${contact.name}`
 				})
 			},
 			{

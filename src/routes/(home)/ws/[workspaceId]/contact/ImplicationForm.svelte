@@ -4,6 +4,7 @@
 
 	import { ContactLabel } from '$lib/interface'
 	import { api } from '$lib/store/api'
+	import { ws } from '$lib/store'
 
 	export let action = ''
 	export let actionDelete = ''
@@ -17,6 +18,7 @@
 	on:delete
 	{action}
 	{actionDelete}
+	actionPrefix={$ws}
 	bind:this={form}
 	data={implication}
 	fields={[

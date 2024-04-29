@@ -15,6 +15,9 @@
 	{actionDelete}
 	actionPrefix={$ws}
 	data={contact}
+	options={{
+		successUpdate: false
+	}}
 	fields={[
 		[
 			{
