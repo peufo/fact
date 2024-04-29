@@ -17,7 +17,7 @@
 		</a>
 	{/if}
 	{#if $page.data.workspace}
-		<InputSearch />
+		<InputSearch class="min-w-52" />
 	{/if}
 
 	<div class="grow" />

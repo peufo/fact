@@ -15,7 +15,6 @@
 	{actionDelete}
 	actionPrefix={$ws}
 	data={contact}
-	classSection="pl-8 pr-4"
 	fields={[
 		[
 			{

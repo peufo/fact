@@ -26,7 +26,6 @@
 	bind:this={form}
 	{action}
 	{actionDelete}
-	classSection="pl-8 pr-4"
 	fields={[
 		[
 			{

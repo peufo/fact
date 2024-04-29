@@ -11,7 +11,6 @@
 	on:success
 	{action}
 	{actionDelete}
-	classSection="pl-8 pr-4"
 	fields={[
 		[
 			{
