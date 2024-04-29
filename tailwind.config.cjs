@@ -1,5 +1,3 @@
-const daisyui = require('daisyui')
-
 /** @type {import('tailwindcss').Config}*/
 const config = {
 	content: ['./src/**/*.{html,js,svelte,ts}', './node_modules/**/fuma/dist/**/*.svelte'],
@@ -9,7 +7,7 @@ const config = {
 		extend: {}
 	},
 
-	plugins: [daisyui],
+	plugins: [require('daisyui'), require('@tailwindcss/typography')],
 	daisyui: {
 		logs: false
 	}

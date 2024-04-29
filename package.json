@@ -49,6 +49,7 @@
 		"@mdi/js": "^7.4.47",
 		"@paralleldrive/cuid2": "^2.2.2",
 		"@prisma/client": "5.13.0",
+		"@tailwindcss/typography": "^0.5.13",
 		"axios": "^1.6.8",
 		"debounce": "^2.0.0",
 		"fuma": "^0.1.23",
