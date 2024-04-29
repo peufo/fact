@@ -267,7 +267,7 @@ model Note {
   type      NoteType       @default(note)
   direction NoteDirection?
   name      String?
-  content   String
+  content   String         @db.LongText
   documents Document[]
 
   dueDate DateTime? // type === 'task'
