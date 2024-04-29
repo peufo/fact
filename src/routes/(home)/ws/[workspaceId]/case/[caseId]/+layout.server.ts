@@ -1,17 +1,16 @@
-import { error } from '@sveltejs/kit'
 import { prisma } from '$lib/server'
 
-export const load = async ({ params, depends }) => {
+export const load = async ({ params }) => {
 	const inludeUser = { include: { user: true } }
-	const _case = await prisma.case.findUnique({
-		where: { id: params.caseId },
-		include: {
-			memberAdmin: inludeUser,
-			memberInCharge: inludeUser,
-			client: true,
-			contactImplications: { include: { contact: true, roles: true } }
-		}
-	})
-	if (!_case) throw error(404, 'Cette affaire  introuvable')
-	return { case: _case }
+	return {
+		case: await prisma.case.findUniqueOrThrow({
+			where: { id: params.caseId },
+			include: {
+				memberAdmin: inludeUser,
+				memberInCharge: inludeUser,
+				client: true,
+				contactImplications: { include: { contact: true, roles: true } }
+			}
+		})
+	}
 }

@@ -10,7 +10,7 @@
 	export let data
 </script>
 
-<div class="texture flex h-full gap-4">
+<div class="flex h-full gap-4">
 	<ul class="shrink-0 border-r bg-white shadow-2xl">
 		{#each data.cases as item}
 			{@const active = $page.params.caseId === item.id}

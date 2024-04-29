@@ -21,10 +21,10 @@
 	let formImplication: Form<any>
 </script>
 
-<div style="min-height: calc(100vh - 50px)" class="flex gap-4">
+<div style="min-height: calc(100vh - 50px)" class="flex gap-1">
 	<Navigation />
 
-	<main class="ml-14 flex grow flex-col">
+	<main class="flex grow flex-col">
 		<slot />
 	</main>
 </div>

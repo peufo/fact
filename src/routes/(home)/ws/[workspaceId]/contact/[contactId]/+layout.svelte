@@ -22,7 +22,7 @@
 </script>
 
 {#key $page.params.contactId}
-	<div in:fade|local class="mx-auto max-w-3xl grow p-4">
+	<div in:fade|local class="mx-auto max-w-3xl grow">
 		<slot />
 	</div>
 {/key}

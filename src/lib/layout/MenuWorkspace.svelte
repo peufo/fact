@@ -28,7 +28,7 @@
 					{workspace.name}
 				</a>
 			{/each}
-			<hr />
+			<div class="border"></div>
 			<a href="/create" class="menu-item">
 				<Icon path={mdiPlus} size={18} />
 				<span>Nouveau</span>

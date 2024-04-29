@@ -7,7 +7,7 @@
 
 	function getContactLabel(c: Contact): string {
 		if (c.isMoralPerson) return [c.name, c.attentionTo].filter(Boolean).join(' ')
-		return [c.greeting, c.firstName, c.name].filter(Boolean).join(' ')
+		return [c.firstName, c.name].filter(Boolean).join(' ')
 	}
 </script>
 
