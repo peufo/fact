@@ -3,33 +3,29 @@
 	import { page } from '$app/stores'
 	import { Icon } from 'fuma'
 
-	import { ContactLabel, ActionBar, List, ListItem } from '$lib/interface'
+	import { ContactLabel } from '$lib/interface'
 	import { ws } from '$lib/store'
 	import ContactActions from './Actions.svelte'
 
 	export let data
 </script>
 
-<ActionBar
-	createLabel="Nouveau contact"
-	createHref="{$page.url.pathname}?contact-form=create"
-	titles={['Contacts']}
-/>
-
 <div class="texture flex h-full gap-4">
-	<List items={data.contacts} let:item={contact} class="shrink-0 border-r bg-white shadow-2xl">
-		{@const isActive = $page.params.contactId === contact.id}
-		<ListItem {isActive} href="{$ws}/contact/{contact.id}">
-			<Icon
-				path={contact.isMoralPerson ? mdiBankOutline : mdiBadgeAccountHorizontalOutline}
-				class="fill-primary-light stroke-none"
-			/>
-
-			<ContactLabel {contact} class="grow whitespace-nowrap {isActive ? 'font-medium' : ''}" />
-
-			<ContactActions {contact} class="invisible ml-4 group-hover:visible" />
-		</ListItem>
-	</List>
+	<ul class="shrink-0 border-r bg-white shadow-2xl">
+		{#each data.contacts as contact}
+			{@const active = $page.params.contactId === contact.id}
+			<li>
+				<a href="{$ws}/contact/{contact.id}" class="menu-item" class:active>
+					<Icon
+						path={contact.isMoralPerson ? mdiBankOutline : mdiBadgeAccountHorizontalOutline}
+						class="fill-primary-light stroke-none"
+					/>
+					<ContactLabel {contact} class="grow whitespace-nowrap {active ? 'font-medium' : ''}" />
+					<ContactActions {contact} class="invisible ml-4 group-hover:visible" />
+				</a>
+			</li>
+		{/each}
+	</ul>
 
 	<slot />
 </div>

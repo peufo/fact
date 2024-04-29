@@ -13,7 +13,7 @@
 	import type { ContactImplication } from '@prisma/client'
 
 	import { ws } from '$lib/store'
-	import { ContactLabel, Badge, ListItem } from '$lib/interface'
+	import { ContactLabel, Badge } from '$lib/interface'
 	import ContactImplicationDrawer from '../../contact/ImplicationDrawer.svelte'
 
 	export let _case: LayoutData['case']
@@ -34,57 +34,56 @@
 	</div>
 
 	<ul>
-		<ListItem
-			class="pl-[8px]"
-			href="{$ws}/contact/{_case.clientId}"
-			tippyProps={{ placement: 'left' }}
-		>
-			<Icon path={mdiStarOutline} />
-			<div class="grow">
-				<ContactLabel contact={_case.client} />
-			</div>
-			<Badge>Client</Badge>
-		</ListItem>
+		<li class="pl-[8px]">
+			<a href="{$ws}/contact/{_case.clientId}" class="menu-item">
+				<Icon path={mdiStarOutline} />
+				<div class="grow">
+					<ContactLabel contact={_case.client} />
+				</div>
+				<Badge>Client</Badge>
+			</a>
+		</li>
 
 		{#each _case.contactImplications as imp}
-			<ListItem
-				class="pl-[8px]"
-				href="{$ws}/contact/{imp.contact.id}"
-				title={imp.description}
-				tippyProps={{ placement: 'left' }}
-			>
-				<Icon path={mdiAccountOutline} />
-				<div class="grow">
-					<ContactLabel contact={imp.contact} />
-				</div>
-				<div class="flex">
-					{#each imp.roles as { name }}
-						<Badge class="ml-2">{name}</Badge>
-					{/each}
-				</div>
-				<svelte:fragment slot="afterHover">
-					<a
-						href={$urlParam.with({ 'implication-form': 'update' })}
-						on:click={() => (implication = imp)}
-					>
-						<Icon title="Éditer l'implication du contact" path={mdiSquareEditOutline} size={18} />
-					</a>
-				</svelte:fragment>
-			</ListItem>
+			<li class="menu-item group pl-[8px]">
+				<a href="{$ws}/contact/{imp.contact.id}">
+					<Icon path={mdiAccountOutline} />
+					<div class="grow">
+						<ContactLabel contact={imp.contact} />
+					</div>
+					<div class="flex">
+						{#each imp.roles as { name }}
+							<Badge class="ml-2">{name}</Badge>
+						{/each}
+					</div>
+				</a>
+
+				<a
+					class="hidden group-hover:block"
+					href={$urlParam.with({ 'implication-form': 'update' })}
+					on:click={() => (implication = imp)}
+				>
+					<Icon title="Éditer l'implication du contact" path={mdiSquareEditOutline} size={18} />
+				</a>
+			</li>
 		{/each}
 
-		<ListItem class="pl-[8px] opacity-50" href="{$ws}/admin">
-			<Icon path={mdiAccountTie} />
-			<span class="grow">{_case.memberInCharge.user.username}</span>
-			<Badge>Responsable</Badge>
-		</ListItem>
+		<li class="pl-[8px] opacity-50">
+			<a href="{$ws}/admin" class="menu-item">
+				<Icon path={mdiAccountTie} />
+				<span class="grow">{_case.memberInCharge.user.username}</span>
+				<Badge>Responsable</Badge>
+			</a>
+		</li>
 
 		{#if _case.memberAdmin}
-			<ListItem class="pl-[8px] opacity-50" href="{$ws}/admin">
-				<Icon path={mdiAccountCog} />
-				<span class="grow">{_case.memberAdmin.user.username}</span>
-				<Badge>Administrateur</Badge>
-			</ListItem>
+			<li class="pl-[8px] opacity-50">
+				<a href="{$ws}/admin" class="menu-item">
+					<Icon path={mdiAccountCog} />
+					<span class="grow">{_case.memberAdmin.user.username}</span>
+					<Badge>Administrateur</Badge>
+				</a>
+			</li>
 		{/if}
 	</ul>
 </Card>

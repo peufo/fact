@@ -4,7 +4,7 @@
 
 	import { Card, urlParam, Icon } from 'fuma'
 	import { ws } from '$lib/store'
-	import { ListItem, Badge } from '$lib/interface'
+	import { Badge } from '$lib/interface'
 
 	export let contact: LayoutData['contact']
 </script>
@@ -21,26 +21,25 @@
 	</div>
 	<ul>
 		{#each contact.cases as _case (_case.id)}
-			<ListItem href="{$ws}/case/{_case.id}" class="pl-[8px]">
-				<Badge>{_case.ref}</Badge>
-				<span class="grow">{_case.name}</span>
-				<Badge>Client</Badge>
-			</ListItem>
+			<li class="pl-[8px]">
+				<a href="{$ws}/case/{_case.id}">
+					<Badge>{_case.ref}</Badge>
+					<span class="grow">{_case.name}</span>
+					<Badge>Client</Badge>
+				</a>
+			</li>
 		{/each}
 
 		{#each contact.implications as imp (imp.id)}
-			<ListItem
-				href="{$ws}/case/{imp.case.id}"
-				class="pl-[8px]"
-				title={imp.description}
-				tippyProps={{ placement: 'left' }}
-			>
-				<Badge>{imp.case.ref}</Badge>
-				<span class="grow">{imp.case.name}</span>
-				{#each imp.roles as { name }}
-					<Badge>{name}</Badge>
-				{/each}
-			</ListItem>
+			<li>
+				<a href="{$ws}/case/{imp.case.id}">
+					<Badge>{imp.case.ref}</Badge>
+					<span class="grow">{imp.case.name}</span>
+					{#each imp.roles as { name }}
+						<Badge>{name}</Badge>
+					{/each}
+				</a>
+			</li>
 		{/each}
 
 		{#if !contact.cases.length && !contact.implications.length}
